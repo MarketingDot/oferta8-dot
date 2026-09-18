@@ -477,7 +477,6 @@ button { font: inherit; color: inherit; }
   text-transform: uppercase;
 }
 
-.price__unit { margin: 4px 0 0; grid-area: 3 / 1 / 4 / -1; font-size: 17px; font-weight: 500; line-height: 1.2; color: var(--blue); }
 
 /* ---------- Popup de sabores ----------
    3 etapas: sabor 1, sabor 2, brindes. Escolher avanca sozinho;
