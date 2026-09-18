@@ -412,7 +412,20 @@ button { font: inherit; color: inherit; }
   transition: opacity .35s ease, transform .35s ease;
 }
 .gift-list__img--giro img.is-on { opacity: 1; transform: none; }
+/* os 3 pouches pagos ocupam uma linha so: as miniaturas ficam lado a lado,
+   levemente sobrepostas como um leque. Cada uma e um rodizio proprio, comecando
+   um sabor a frente da anterior, entao as tres nunca mostram o mesmo pouch. */
+.gift-list__trio { flex: none; display: flex; align-items: center; }
+.gift-list__trio .gift-list__img { width: 34px; }
+.gift-list__trio .gift-list__img + .gift-list__img { margin-left: -10px; }
+
 .gift-list__name { flex: 1; min-width: 0; }
+
+/* nessa linha o "de/por" vai empilhado: ao lado de tres miniaturas, lado a lado
+   ele roubava largura demais e o nome quebrava em quatro linhas */
+.gift-list__price { flex: none; display: flex; flex-direction: column; align-items: flex-end; gap: 1px; line-height: 1.15; }
+.gift-list__price .gift-list__was { font-size: 13px; }
+.gift-list__price .now { min-width: 0; text-align: right; }
 .gift-list__was  { flex: none; white-space: nowrap; color: var(--gray); text-decoration: line-through; }
 
 /* preco com desconto dos pouches: azul, porque sobre o creme o destaque
@@ -425,6 +438,8 @@ button { font: inherit; color: inherit; }
   color: var(--blue);
   white-space: nowrap;
 }
+.now small { font-size: 11px; font-weight: 500; opacity: .75; }
+
 .free { min-width: 74px; text-align: center; }
 
 .free {
