@@ -198,8 +198,11 @@
         var n = qtd(caixa);
         caixa.querySelector('[data-qtd-txt]').textContent = n;
         caixa.classList.toggle('is-on', n > 0);
-        caixa.querySelector('[data-menos]').disabled = n === 0;
-        caixa.querySelector('[data-mais]').disabled  = total >= PAGOS;
+        // cada cartao tem dois [data-mais] (o ADICIONAR + e o + do pill) e o CSS
+        // mostra um de cada vez -- desabilitar so o primeiro deixaria o outro
+        // aceso depois de fechar as 3 unidades
+        caixa.querySelectorAll('[data-menos]').forEach(function (b) { b.disabled = n === 0; });
+        caixa.querySelectorAll('[data-mais]').forEach(function (b) { b.disabled = total >= PAGOS; });
       });
 
       if (contaTotal) contaTotal.textContent = total;
@@ -376,6 +379,18 @@
       if (mais && somaPagos() === PAGOS) {
         setTimeout(function () { if (!modal.hidden) ir(2); }, 380);
       }
+    });
+
+    /* paridade com o seletor classico: com o sabor ainda em zero, o cartao
+       inteiro adiciona. E so um atalho para o proprio ADICIONAR +, entao a trava
+       das 3 unidades e o avanco automatico continuam num lugar so. */
+    modal.addEventListener('click', function (e) {
+      if (!e.target.closest) return;
+      if (e.target.closest('[data-mais], [data-menos]')) return;   // o handler acima ja cuidou
+      var caixa = e.target.closest('.conta');
+      if (!caixa || caixa.classList.contains('is-on')) return;     // com quantidade, quem manda e o pill
+      var add = caixa.querySelector('[data-mais]:not(:disabled)');
+      if (add) add.click();
     });
 
     cta.addEventListener('click', function () {

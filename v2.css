@@ -556,60 +556,167 @@ button { font: inherit; color: inherit; }
 
 .pick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
 
-/* ---------- Contador dos 3 pouches pagos ----------
-   Os 4 sabores em fileira, cada um com - / +, e a pessoa distribui as 3
-   unidades como quiser (3 do mesmo sabor inclusive). Em 4 colunas o espaco
-   por cartao fica em ~80px no iPhone, entao os botoes sao de 22px e o nome
-   vai curto ("Frutas", nao "Frutas Vermelhas"). */
-/* o trilho iguala a altura das tres telas pela mais alta (o 2x2 dos sabores),
-   e a do contador e bem mais baixa -- centralizar evita o vazio cair todo
-   embaixo do contador */
+/* ---------- Etapa 1 · seletor de sabores (lista vertical) ----------
+   Porte do seletor classico das ofertas 1 e 2: lista vertical de cartoes,
+   thumb quadrada com o cenario fotografico, nome e, a direita, ADICIONAR +
+   quando o sabor esta em zero / pill navy "- N +" quando ja tem unidade.
+   A troca entre os dois controles e so CSS: o render() do v2.js ja poe
+   .is-on no cartao quando a quantidade passa de zero. */
+/* o trilho iguala a altura das tres telas pela mais alta; manter o center
+   aqui para o caso de a etapa 2 (2x2 de sabores) continuar sendo a maior */
 .modal__panel--conta { display: flex; flex-direction: column; justify-content: center; }
 
-.conta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+/* contador "N/3 sabores": alinhado a direita, FORA do container da lista.
+   A barra de progresso nao entra aqui -- o popup ja tem a dele (.modal__steps). */
+.conta-total {
+  margin: 0 0 8px;
+  text-align: right;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--navy);
+}
+.conta-total strong { font-size: 12px; color: var(--navy); font-variant-numeric: tabular-nums; }
+/* quando fecha as 3, o contador vira confirmacao em vez de cobranca */
+.conta-total.is-full strong { color: #2fa84f; }
 
-.conta {
+.conta-grid {
+  /* a thumb encolhe junto com a altura da tela, para 4 cartoes + rodape
+     caberem num iPhone SE sem esticar as etapas 2 e 3 do trilho */
+  --thumb: clamp(52px, 8.4dvh, 64px);
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  padding: 8px 3px 10px;
-  border: 2px solid var(--navy-14);
-  border-radius: var(--radius-sm);
-  background: var(--cream-card);
-  transition: border-color .18s ease;
+  gap: 8px;
+  padding: 10px;
+  border-radius: var(--radius);
+  background: var(--cream-2);
 }
 
-.conta.is-on { border-color: var(--navy); }
-.conta__media { display: block; width: 100%; }
-.conta__media img { width: 100%; height: clamp(56px, 11dvh, 92px); object-fit: contain; }
-.conta__name { font-size: 11px; font-weight: 700; line-height: 1.1; text-align: center; }
-.conta__steps { display: flex; align-items: center; gap: 1px; }
+.conta {
+  position: relative;          /* ancora do badge */
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  /* borda transparente no repouso: o .is-on troca so a cor, sem pular altura */
+  border: 2px solid transparent;
+  border-radius: var(--radius-sm);
+  background: var(--cream-card);
+  cursor: pointer;
+  transition: border-color .18s ease;
+}
+.conta.is-on { border-color: var(--navy); cursor: default; }
+
+/* abinha amarela pendurada no topo do cartao: quadrada em cima,
+   arredondada embaixo, sem sombra e sem vazar (o cartao nao tem overflow) */
+.conta__badge {
+  position: absolute;
+  top: 0; right: 10px;
+  padding: 2px 7px;
+  border-radius: 0 0 6px 6px;
+  background: var(--yellow);
+  color: var(--navy);
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1.5;
+  letter-spacing: .3px;
+  text-transform: uppercase;
+}
+
+.conta__media {
+  display: block;
+  flex: none;
+  width: var(--thumb);
+  height: var(--thumb);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--cream-2);
+}
+/* cover, nao contain: as seletor-*.webp sao quadradas e ja tem o cenario
+   colorido, entao o quadrado fica preenchido de ponta a ponta como no print */
+.conta__media img { width: 100%; height: 100%; object-fit: cover; }
+
+.conta__name {
+  flex: 1;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: var(--navy);
+}
+
+/* ----- controle da direita, estado ZERO: botao ADICIONAR + ----- */
+.conta__add {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: var(--navy);
+  color: var(--cream);
+  font-size: 11px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.conta__add svg { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
+/* fechou as 3: o render() desabilita todo [data-mais] de uma vez */
+.conta__add:disabled { opacity: .28; cursor: default; }
+
+/* ----- controle da direita, estado COM QUANTIDADE: pill navy ----- */
+.conta__steps {
+  display: none;
+  align-items: center;
+  flex: none;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  background: var(--navy);
+}
+
+/* a alternancia inteira do seletor classico mora nestas duas linhas */
+.conta.is-on .conta__add   { display: none; }
+.conta.is-on .conta__steps { display: flex; }
 
 .conta__btn {
   display: grid;
   place-items: center;
-  width: 22px; height: 22px;
+  width: 38px; height: 34px;
   padding: 0;
   border: 0;
-  border-radius: 6px;
-  background: var(--navy-08);
-  color: var(--navy);
+  background: none;
+  color: var(--cream);
   cursor: pointer;
 }
+.conta__btn:disabled { opacity: .3; cursor: default; }
 
-.conta__btn:disabled { opacity: .28; cursor: default; }
-.conta__qtd { min-width: 16px; text-align: center; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+.conta__qtd {
+  min-width: 22px;
+  padding: 0 2px;
+  text-align: center;
+  color: var(--cream);
+  font-size: 14px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
 
-.conta-total { margin: 16px 0 0; text-align: center; font-size: 14px; font-weight: 500; }
-.conta-total strong { font-size: 17px; color: var(--blue); }
-/* quando fecha as 3, o contador vira confirmacao em vez de cobranca */
-.conta-total.is-full strong { color: #2fa84f; }
+/* anel de foco: azul sobre o creme do cartao, amarelo sobre o pill navy */
+.conta__add:focus-visible { outline: 2px solid var(--blue);   outline-offset: 2px; }
+.conta__btn:focus-visible { outline: 2px solid var(--yellow); outline-offset: -2px; }
 
 @media (min-width: 992px) {
-  .conta__name { font-size: 13px; }
-  .conta__btn  { width: 26px; height: 26px; }
-  .conta__qtd  { min-width: 22px; font-size: 17px; }
+  .conta-grid { --thumb: clamp(56px, 9dvh, 72px); gap: 10px; padding: 12px; }
+  .conta      { gap: 14px; padding: 12px 14px; }
+  .conta__name { font-size: 16px; }
+  .conta__add  { padding: 10px 16px; font-size: 12px; }
+  .conta__btn  { width: 42px; height: 38px; }
+  .conta__qtd  { font-size: 16px; }
+  .conta-total, .conta-total strong { font-size: 13px; }
+  .conta__badge { font-size: 9px; }
 }
 
 .pick {
