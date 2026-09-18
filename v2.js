@@ -103,7 +103,6 @@
     var picks    = [].slice.call(modal.querySelectorAll('.pick input'));
     var checkout = document.getElementById('checkoutBtn');
     var unlocked = document.getElementById('modalUnlocked');
-    var resumos  = [].slice.call(modal.querySelectorAll('[data-resumo]'));
     var imgGratis  = modal.querySelector('[data-pouch-gratis]');
     var nomeGratis = modal.querySelector('[data-nome-gratis]');
     var giroImgs = unlocked ? [].slice.call(unlocked.querySelectorAll('img')) : [];
@@ -128,49 +127,6 @@
 
     function somaPagos() {
       return contas.reduce(function (t, caixa) { return t + qtd(caixa); }, 0);
-    }
-
-    /* Resumo do que a pessoa ja garantiu, escrito nos [data-resumo]: o rodape
-       do popup (visivel nas etapas 1 e 2) e o topo da tela de brindes.
-       O sabor gratis soma no mesmo nome dos pagos -- 2 menta pagos mais o
-       gratis de menta le "3 Menta", nao "2 Menta e 1 Menta". */
-    var BRINDES_TXT = '<strong>Mousepad DOT</strong>, <strong>Apoio de Teclado</strong> e <strong>Frete Grátis</strong>';
-
-    function sabores() {
-      var itens = [];
-
-      function soma(nome, n) {
-        for (var i = 0; i < itens.length; i++) {
-          if (itens[i].nome === nome) { itens[i].qtd += n; return; }
-        }
-        itens.push({ nome: nome, qtd: n });
-      }
-
-      contas.forEach(function (caixa) {
-        if (qtd(caixa)) soma(caixa.dataset.sabor, qtd(caixa));
-      });
-
-      var gratis = escolhido('pouch4');
-      if (gratis) {
-        var rotulo = gratis.parentNode.querySelector('.pick__name');
-        soma(rotulo ? rotulo.textContent.trim() : gratis.value, 1);
-      }
-      return itens;
-    }
-
-    function fraseResumo() {
-      var itens = sabores();
-      var total = itens.reduce(function (t, i) { return t + i.qtd; }, 0);
-
-      if (!total) return BRINDES_TXT + ' já estão garantidos. Agora escolha seus sabores.';
-
-      var lista = itens.map(function (i) { return '<strong>' + i.qtd + ' ' + i.nome + '</strong>'; });
-      var fim = lista.length > 1
-        ? lista.slice(0, -1).join(', ') + ' e ' + lista[lista.length - 1]
-        : lista[0];
-
-      return 'Você garantiu ' + total + (total > 1 ? ' pouches: ' : ' pouch: ') + fim
-           + '. Mais ' + BRINDES_TXT + '.';
     }
 
     /* Link de compra da Yampi: /r/TOKEN:QTD,TOKEN:QTD
@@ -254,8 +210,6 @@
       if (contaTotal) contaTotal.textContent = total;
       if (contaLinha) contaLinha.classList.toggle('is-full', total === PAGOS);
 
-      var frase = fraseResumo();
-      resumos.forEach(function (el) { el.innerHTML = frase; });
 
       // o cartao do pouch gratis passa a mostrar o sabor escolhido; sem escolha
       // ainda, volta para o desenho generico
