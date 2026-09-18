@@ -103,8 +103,6 @@
     var picks    = [].slice.call(modal.querySelectorAll('.pick input'));
     var checkout = document.getElementById('checkoutBtn');
     var unlocked = document.getElementById('modalUnlocked');
-    var imgGratis  = modal.querySelector('[data-pouch-gratis]');
-    var nomeGratis = modal.querySelector('[data-nome-gratis]');
     var giroImgs = unlocked ? [].slice.call(unlocked.querySelectorAll('img')) : [];
     var giroTimer = null;
     var giroIdx = 0;
@@ -127,6 +125,11 @@
 
     function somaPagos() {
       return contas.reduce(function (t, caixa) { return t + qtd(caixa); }, 0);
+    }
+
+    // tudo na mao: as 3 unidades distribuidas e o sabor do pouch gratis escolhido
+    function completo() {
+      return somaPagos() === PAGOS && !!escolhido('pouch4');
     }
 
     /* Link de compra da Yampi: /r/TOKEN:QTD,TOKEN:QTD
@@ -173,15 +176,17 @@
       });
       passos.forEach(function (p, i) { p.classList.toggle('is-done', i < etapa); });
 
-      // o botao de finalizar so existe na etapa dos brindes; antes dela o
-      // rodape mostra o que ja esta garantido
+      // o finalizar aparece assim que a escolha esta completa, em qualquer
+      // etapa -- quem volta para trocar um sabor nao precisa andar ate o fim
+      // de novo. Na etapa dos brindes ele aparece sempre, que e a tela dela.
       // is-off usa visibility: mantem o elemento ocupando a celula do
       // rodape, para a altura do popup nao mudar entre as 3 telas
-      cta.classList.toggle('is-off', etapa < ULTIMA);
-      cta.inert = etapa < ULTIMA;
+      var mostraCta = completo() || etapa === ULTIMA;
+      cta.classList.toggle('is-off', !mostraCta);
+      cta.inert = !mostraCta;
 
       if (unlocked) {
-        var escondida = etapa === ULTIMA;
+        var escondida = mostraCta;
         unlocked.classList.toggle('is-off', escondida);
         unlocked.inert = escondida;
         if (escondida) desligaGiro(); else ligaGiro();
@@ -210,16 +215,6 @@
       if (contaTotal) contaTotal.textContent = total;
       if (contaLinha) contaLinha.classList.toggle('is-full', total === PAGOS);
 
-
-      // o cartao do pouch gratis passa a mostrar o sabor escolhido; sem escolha
-      // ainda, volta para o desenho generico
-      if (imgGratis) {
-        imgGratis.src = gratis ? 'assets/seletor-' + gratis.value + '.webp' : 'assets/icone-pouch.webp';
-      }
-      if (nomeGratis) {
-        var rot = gratis && gratis.parentNode.querySelector('.pick__name');
-        nomeGratis.textContent = rot ? '4º Pouch de ' + rot.textContent.trim() : '4º Pouch do seu sabor';
-      }
 
       if (checkout) {
         checkout.dataset.pagos = contas
@@ -407,13 +402,16 @@
     });
 
     cta.addEventListener('click', function () {
-      if (etapa === 1 && somaPagos() < PAGOS) return;
-      if (etapa === 2 && !escolhido('pouch4')) return;
-      if (etapa < ULTIMA) { ir(etapa + 1); return; }
       // navega pela URL, nao por checkout.click(): aquele botao abre o
       // popup, entao clicar nele aqui reabriria tudo na etapa 1
-      var destino = checkout && checkout.getAttribute('href');
-      if (destino && destino !== '#') location.href = destino;
+      if (completo()) {
+        var destino = checkout && checkout.getAttribute('href');
+        if (destino && destino !== '#') location.href = destino;
+        return;
+      }
+      if (etapa === 1 && somaPagos() < PAGOS) return;
+      if (etapa === 2 && !escolhido('pouch4')) return;
+      if (etapa < ULTIMA) ir(etapa + 1);
     });
 
     voltar.addEventListener('click', function () { ir(etapa - 1); });
