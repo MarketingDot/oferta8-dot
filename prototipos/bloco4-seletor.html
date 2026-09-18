@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DOT — Bloco 4 (protótipo do seletor de sabores)</title>
+<!--
+  Protótipo isolado do BLOCO 4 — montagem do kit em 3 passos (estilo Atlas Coffee Club):
+    1. Oferta (já selecionada)   2. Sabor (4 lado a lado)   3. Brindes (já selecionados)   + CTA
+  Depois de aprovado, o <section id="oferta"> + CSS + JS vão para o index.html.
+  Os caminhos das imagens usam ../assets porque este arquivo fica em /prototipos.
+-->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Red+Hat+Text:wght@400;500;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --lime: #46de46;
+  --text: #000;
+  --sans: 'Red Hat Text', Arial, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; border: 0 solid; }
+body { background: #fff; color: var(--text); font-family: var(--sans); font-size: 16px; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+img { display: block; max-width: 100%; height: auto; }
+a { color: inherit; text-decoration: none; }
+button { font: inherit; color: inherit; background: none; cursor: pointer; }
+[hidden] { display: none !important; }
+
+/* ---------- montagem do kit (bloco 4) ---------- */
+.kb { --kb-bg: #efe6d3; --kb-pick: #f7d117; --kb-line: #e7e3da; background: var(--kb-bg); padding: 40px 12px 48px; }
+.kb-wrap { max-width: 1040px; margin: 0 auto; }
+.kb-title { margin-bottom: 20px; text-align: center; font-size: 30px; line-height: 1.08; font-weight: 700; letter-spacing: -.02em; }
+
+.kb-step { position: relative; margin-top: 14px; }
+.kb-num { position: absolute; left: 12px; top: -14px; z-index: 1; display: flex; width: 34px; height: 34px; align-items: center; justify-content: center; border-radius: 50%; background: #1a1a1a; color: #fff; font-size: 17px; font-weight: 700; }
+.kb-panel { border-radius: 16px; background: #fff; padding: 24px 12px 16px; }
+.kb-head { text-align: center; margin-bottom: 14px; }
+.kb-head h3 { font-size: 17px; line-height: 22px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; }
+.kb-head p { margin-top: 2px; font-size: 14px; line-height: 20px; color: #444; }
+.kb-todo { display: inline-flex; align-items: center; gap: 8px; }
+/* bolinha do título: pisca entre vazia e marcada até a pessoa escolher; depois fica marcada com check */
+.kb-dot { display: inline-flex; width: 20px; height: 20px; flex-shrink: 0; align-items: center; justify-content: center; border: 2px solid #1a1a1a; border-radius: 50%; color: transparent; animation: kb-dot-blink 3s ease-in-out infinite; }
+.kb-dot svg { width: 10px; height: 10px; }
+@keyframes kb-dot-blink {
+  0%, 35%, 100% { border-color: #1a1a1a; background: transparent; color: transparent; }
+  50%, 85% { border-color: var(--kb-pick); background: var(--kb-pick); color: #1a1a1a; }
+}
+.kb-dot.is-done { animation: none; border-color: var(--kb-pick); background: var(--kb-pick); color: #1a1a1a; }
+@media (prefers-reduced-motion: reduce) { .kb-dot { animation: none; } }
+
+/* itens que já vêm marcados e não podem ser desmarcados */
+.opt--locked { cursor: default; }
+
+/* 1. oferta (card só com a imagem, já selecionado) */
+.offer { position: relative; display: block; overflow: hidden; border: 1.5px solid var(--kb-pick); border-radius: 16px; background: #fff; box-shadow: 0 4px 10px rgba(0, 0, 0, .1); container-type: inline-size; }
+.offer input { position: absolute; opacity: 0; pointer-events: none; }
+.offer-art { display: block; margin: calc(2cqw - 1.5px); overflow: hidden; border-radius: 12px; }
+.offer-art img { width: 100%; aspect-ratio: 1400 / 600; object-fit: cover; }
+.offer .flv-check { background: var(--kb-pick); color: #1a1a1a; }
+
+/* 2. sabores — carrossel arrastável, foto ocupa 96% do card, nome sobre a foto */
+.flv-viewport { --flv-edge: 14px; position: relative; margin: 0 -12px; }
+.flv-viewport::before, .flv-viewport::after { content: ""; position: absolute; top: 0; bottom: 0; z-index: 3; width: var(--flv-edge); pointer-events: none; -webkit-backdrop-filter: blur(5px); backdrop-filter: blur(5px); }
+.flv-viewport::before { left: 0; -webkit-mask-image: linear-gradient(to right, #000 40%, transparent); mask-image: linear-gradient(to right, #000 40%, transparent); }
+.flv-viewport::after { right: 0; -webkit-mask-image: linear-gradient(to left, #000 40%, transparent); mask-image: linear-gradient(to left, #000 40%, transparent); }
+.flv-track { --flv-basis: 60%; --flv-gap: 12px; display: flex; gap: var(--flv-gap); padding: 8px 0 18px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; -webkit-overflow-scrolling: touch; cursor: grab; }
+.flv-track::-webkit-scrollbar { display: none; }
+.flv-track.is-dragging { cursor: grabbing; }
+.flv { position: relative; display: block; flex: 0 0 var(--flv-basis); cursor: pointer; border: 1.5px solid var(--kb-line); border-radius: 16px; background: #fff; container-type: inline-size; transition: border-color .2s ease, box-shadow .2s ease, transform .25s ease; user-select: none; -webkit-user-select: none; }
+.flv input { position: absolute; opacity: 0; pointer-events: none; }
+.flv:hover { border-color: #cfc9bb; }
+.flv-track.has-pick .flv { transform: scale(.96); }
+.flv-track .flv.is-picked { border-color: var(--kb-pick); box-shadow: 0 4px 10px rgba(0, 0, 0, .14); transform: scale(1.03); }
+.flv:has(input:focus-visible) { outline: 2px solid #1a1a1a; outline-offset: 3px; }
+.flv-art { position: relative; display: block; margin: calc(2cqw - 1.5px); overflow: hidden; border-radius: 12px; }
+.flv-art img { width: 100%; aspect-ratio: 4 / 5; object-fit: cover; pointer-events: none; }
+.flv-name { position: absolute; left: 8px; right: 8px; bottom: 6px; z-index: 1; color: #fff; font-size: 16px; line-height: 19px; font-weight: 700; text-shadow: 0 1px 2px rgba(0, 0, 0, .55), 0 0 10px rgba(0, 0, 0, .35); }
+.flv-check { position: absolute; top: 5px; right: 5px; z-index: 2; display: flex; width: 20px; height: 20px; align-items: center; justify-content: center; border: 1.5px solid #fff; border-radius: 50%; background: rgba(255, 255, 255, .55); color: transparent; box-shadow: 0 1px 4px rgba(0, 0, 0, .25); transition: background-color .2s ease, color .2s ease; }
+.flv-check svg { width: 9px; height: 9px; }
+.flv.is-picked .flv-check { background: var(--kb-pick); color: #1a1a1a; }
+.flv-dots { display: flex; justify-content: center; gap: 2px; margin-top: -2px; }
+.flv-dot { display: flex; width: 20px; height: 20px; align-items: center; justify-content: center; background: none; cursor: pointer; }
+.flv-dot span { width: 8px; height: 8px; border-radius: 50%; background: #d8d2c4; transition: background-color .2s ease, transform .2s ease; }
+.flv-dot.is-active span { background: #1a1a1a; transform: scale(1.15); }
+
+/* 3. brindes */
+.kb-gifts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; max-width: 680px; margin: 0 auto; padding-bottom: 4px; }
+.flv--static { cursor: default; }
+.flv--static.is-picked, .flv--static.is-picked:hover { border-color: var(--kb-pick); box-shadow: 0 4px 10px rgba(0, 0, 0, .14); }
+.kb-gifts .flv-name { font-size: 14px; line-height: 17px; }
+
+/* CTA */
+.kb-cta { margin-top: 20px; border-radius: 16px; background: #fff; padding: 20px 16px; text-align: center; }
+.kb-summary { font-size: 14px; line-height: 20px; color: #444; }
+.kb-summary b { color: #000; }
+.kb-total { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: center; gap: 0 10px; margin-top: 6px; }
+.kb-total b { font-size: 40px; line-height: 1.1; font-weight: 700; letter-spacing: -.02em; }
+.kb-total s { font-size: 18px; color: #666; }
+.btn-cart { display: flex; align-items: center; justify-content: center; width: 100%; max-width: 480px; margin: 14px auto 0; padding: 16px 20px; border-radius: 999px; background: #1a1a1a; color: #fff; font-family: var(--sans); font-size: 18px; line-height: 24px; font-weight: 700; letter-spacing: .02em; text-transform: uppercase; transition: background-color .2s ease, color .2s ease; }
+.btn-cart:hover { background: var(--lime); color: var(--text); }
+.kb-warn { margin-top: 10px; font-size: 14px; line-height: 20px; font-weight: 700; color: #c62828; }
+.kb-panel.is-alert { animation: kb-alert .6s ease 2; }
+@keyframes kb-alert { 50% { box-shadow: 0 0 0 3px var(--kb-pick); } }
+
+@media (min-width: 560px) {
+  .kb { padding: 56px 24px 64px; }
+  .kb-panel { padding: 28px 20px 20px; }
+  .flv-viewport { --flv-edge: 20px; margin: 0 -20px; }
+  .flv-track { --flv-basis: 46%; }
+  .kb-gifts { gap: 16px; }
+  .kb-gifts .flv-name { font-size: 16px; line-height: 19px; }
+}
+@media (min-width: 768px) {
+  .kb-title { margin-bottom: 32px; font-size: 44px; }
+  .kb-head h3 { font-size: 22px; line-height: 28px; }
+  .kb-head p { font-size: 16px; }
+  .flv-track { --flv-basis: 40%; --flv-gap: 16px; }
+  .flv-name { left: 12px; right: 12px; bottom: 8px; font-size: 19px; line-height: 23px; }
+  .kb-gifts .flv-name { font-size: 19px; line-height: 23px; }
+  .kb-cta { padding: 28px 24px; }
+  .kb-total b { font-size: 52px; }
+}
+@media (min-width: 1024px) {
+  .kb { padding: 80px 56px 96px; }
+  .kb-step { display: grid; grid-template-columns: 96px 1fr; align-items: start; margin-top: 24px; }
+  .kb-num { position: static; width: auto; height: auto; background: none; color: #fff; font-size: 132px; line-height: .8; letter-spacing: -.04em; justify-content: flex-start; }
+  .kb-panel { padding: 32px 40px 36px; }
+  .flv-viewport { --flv-edge: 40px; margin: 0 -40px; }
+  .flv-track { --flv-basis: 36%; }
+  .kb-cta { margin-left: 96px; }
+}
+
+/* ---------- carrinho: tela que sobe de baixo para cima (visual do carrinho da oferta5) ---------- */
+.cart { position: fixed; inset: 0; z-index: 1000; font-family: 'Space Grotesk', ui-rounded, 'Avenir Next', sans-serif; -webkit-tap-highlight-color: transparent; }
+.cart-backdrop { position: absolute; inset: 0; background: rgba(4, 17, 38, .55); opacity: 0; transition: opacity .35s ease; }
+.cart-sheet { position: absolute; left: 50%; bottom: 0; display: flex; width: 100%; max-width: 480px; height: 100%; height: 100dvh; flex-direction: column; padding: 22px 22px max(24px, env(safe-area-inset-bottom)); background: #07172e; color: #fff; transform: translate(-50%, 100%); transition: transform .45s cubic-bezier(.2, .9, .25, 1); }
+.cart.is-open .cart-backdrop { opacity: 1; }
+.cart.is-open .cart-sheet { transform: translate(-50%, 0); }
+.cart-head { display: flex; flex-shrink: 0; align-items: center; justify-content: space-between; margin-bottom: 22px; }
+.cart-head h2 { font-size: 36px; line-height: 1.1; font-weight: 700; letter-spacing: -.045em; }
+.cart-round { display: grid; width: 40px; height: 40px; flex-shrink: 0; place-items: center; border: 1px solid rgba(255, 255, 255, .15); border-radius: 50%; background: rgba(255, 255, 255, .05); color: #fff; font-size: 22px; font-weight: 700; line-height: 1; }
+.cart-round:focus-visible, .cart-add:focus-visible, .cart-finish:focus-visible, .cart-picker-item:focus-visible { outline: 2px solid #fceb2e; outline-offset: 3px; }
+.cart-list { display: grid; flex: 1; min-height: 0; align-content: start; gap: 20px; padding: 4px 5px 12px 0; overflow-x: hidden; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; scrollbar-color: rgba(252, 235, 46, .38) transparent; }
+.cart-list::-webkit-scrollbar { width: 4px; }
+.cart-list::-webkit-scrollbar-thumb { border-radius: 999px; background: rgba(252, 235, 46, .38); }
+.cart-items { display: grid; gap: 20px; }
+.cart-item { display: grid; grid-template-columns: 66px 1fr 42px; gap: 14px; align-items: center; }
+.cart-item.is-new { animation: cartItemIn .32s cubic-bezier(.2, .9, .3, 1) both; }
+@keyframes cartItemIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+/* miniaturas redondas: as fotos já vêm recortadas para o círculo */
+.cart-thumb { position: relative; display: block; width: 66px; height: 66px; overflow: hidden; border-radius: 50%; background: #112746; }
+.cart-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; }
+.cart-info { min-width: 0; }
+.cart-info small { display: block; color: #8fa0b6; font-size: 12px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; }
+.cart-info b { display: block; margin-top: 4px; font-size: 17px; line-height: 1.2; font-weight: 700; }
+.cart-price { display: flex; align-items: center; gap: 7px; margin-top: 7px; font-size: 14px; font-weight: 700; line-height: 1; }
+.cart-price s { color: #8fa0b6; text-decoration-color: #8fa0b6; text-decoration-thickness: 2px; }
+.cart-price.is-free strong { color: #fceb2e; }
+.cart-remove { font-size: 21px; }
+
+/* botão + e barra de sabores */
+.cart-add-zone { position: relative; z-index: 5; display: flex; min-height: 66px; align-items: center; padding-left: 7px; }
+.cart-add { position: relative; display: grid; width: 52px; height: 52px; place-items: center; border: 2px solid #fceb2e; border-radius: 50%; background: rgba(252, 235, 46, .08); color: #fceb2e; box-shadow: 0 8px 24px rgba(0, 0, 0, .2); transition: background .16s ease, transform .16s ease, box-shadow .16s ease; }
+.cart-add:active { transform: scale(.92); }
+.cart-add-plus::before { content: "+"; display: block; font-size: 28px; font-weight: 600; line-height: 1; transition: transform .34s cubic-bezier(.3, 1.2, .4, 1); }
+.cart-add.is-open { background: #fceb2e; color: #07172e; box-shadow: 0 0 0 5px rgba(252, 235, 46, .15), 0 10px 28px rgba(0, 0, 0, .24); }
+.cart-add.is-open .cart-add-plus::before { transform: rotate(135deg); }
+.cart-add-label { position: absolute; top: 50%; left: calc(100% + 10px); color: #fff; font-size: 12px; font-weight: 700; line-height: 1; letter-spacing: .025em; white-space: nowrap; transform: translateY(-50%); transition: opacity .15s ease; }
+.cart-add.is-open .cart-add-label { opacity: 0; }
+.cart-picker { position: absolute; top: 50%; left: 68px; z-index: 7; display: flex; align-items: center; transform: translateY(-50%); }
+.cart-picker-bar { display: flex; width: 260px; height: 80px; gap: 4px; padding: 7px; overflow: hidden; border: 1px solid rgba(255, 255, 255, .22); border-radius: 999px; background: rgba(17, 39, 70, .72); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); box-shadow: 0 12px 30px rgba(4, 17, 38, .32); animation: cartBarOpen .52s cubic-bezier(.28, .86, .32, 1) backwards; }
+@keyframes cartBarOpen { from { width: 46px; height: 46px; } to { width: 260px; height: 80px; } }
+.cart-picker-item { display: flex; flex: 0 0 58px; min-height: 58px; flex-direction: column; align-items: center; gap: 3px; padding: 6px 0 5px; border-radius: 20px; transition: background .16s ease, transform .14s ease; animation: cartPickPop .22s cubic-bezier(.2, 1.35, .4, 1) backwards; }
+.cart-picker-item:nth-child(1) { animation-delay: .28s; }
+.cart-picker-item:nth-child(2) { animation-delay: .32s; }
+.cart-picker-item:nth-child(3) { animation-delay: .36s; }
+.cart-picker-item:nth-child(4) { animation-delay: .40s; }
+.cart-picker-item:active { background: rgba(255, 255, 255, .16); transform: scale(.93); }
+.cart-picker-item img { width: 36px; height: 32px; flex-shrink: 0; object-fit: contain; }
+.cart-picker-item span { display: block; width: 100%; color: #fff; font-size: 8px; font-weight: 700; line-height: 1.1; letter-spacing: .02em; text-align: center; text-transform: uppercase; }
+@keyframes cartPickPop { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: scale(1); } }
+
+/* total e finalizar */
+.cart-summary { flex-shrink: 0; padding-top: 20px; border-top: 1px solid rgba(255, 255, 255, .12); }
+.cart-summary-row { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 22px; }
+.cart-summary-row span { font-size: 16px; font-weight: 700; }
+.cart-summary-row strong { max-width: 62%; font-size: 34px; font-weight: 700; line-height: 1; letter-spacing: -.045em; text-align: right; }
+.cart-finish { display: flex; width: 100%; min-height: 58px; align-items: center; justify-content: center; gap: 9px; border-radius: 18px; background: #fceb2e; color: #0b203e; font-size: 16px; font-weight: 700; }
+
+/* carregamento ao finalizar */
+.cart-loading { position: fixed; inset: 0; z-index: 1100; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 18px; background: rgba(4, 20, 47, .45); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); color: #fff; font-family: 'Space Grotesk', ui-rounded, 'Avenir Next', sans-serif; cursor: progress; touch-action: none; animation: cartLoadingIn .16s ease-out both; }
+.cart-spinner { width: 52px; height: 52px; border: 4px solid rgba(255, 255, 255, .22); border-top-color: #fceb2e; border-radius: 50%; animation: cartSpin .6s linear infinite; }
+.cart-loading p { font-size: 15px; font-weight: 700; letter-spacing: .04em; text-shadow: 0 2px 12px rgba(4, 17, 38, .4); }
+@keyframes cartSpin { to { transform: rotate(360deg); } }
+@keyframes cartLoadingIn { from { opacity: 0; } to { opacity: 1; } }
+
+@media (min-width: 520px) {
+  .cart-sheet { height: calc(100dvh - 24px); border-radius: 28px 28px 0 0; box-shadow: 0 -20px 60px rgba(4, 17, 38, .35); }
+}
+@media (max-height: 680px) {
+  .cart-head { margin-bottom: 12px; }
+  .cart-list, .cart-items { gap: 12px; }
+  .cart-add-zone { min-height: 56px; padding-left: 10px; }
+  .cart-add { width: 46px; height: 46px; }
+  .cart-picker { left: 62px; }
+  .cart-summary { padding-top: 12px; }
+  .cart-summary-row { margin-bottom: 12px; }
+  .cart-finish { min-height: 52px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .cart-sheet, .cart-backdrop, .cart-add, .cart-add-plus::before { transition: none; }
+  .cart-item.is-new, .cart-picker-bar, .cart-picker-item { animation: none; }
+  .cart-spinner { animation-duration: 1.4s; }
+}
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="ic-check" viewBox="0 0 18 13" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M17.2 1.06 6.2 12.06 1.2 7.06"/></symbol>
+</svg>
+
+<!-- ============ BLOCO 4 — montagem do kit ============ -->
+<section id="oferta" class="kb">
+  <div class="kb-wrap">
+    <h2 class="kb-title">Monte seu kit DOT</h2>
+
+    <!-- 1. oferta -->
+    <div class="kb-step">
+      <span class="kb-num" aria-hidden="true">1</span>
+      <div class="kb-panel">
+        <label class="offer opt--locked">
+          <input type="radio" name="oferta" value="kit-mousepad" checked>
+          <span class="offer-art"><img src="../assets/seletor/oferta-kit.jpg" alt="4 pouches DOT + 9 sachês Melancia c/ Limão grátis (de R$ 40,00) + mousepad DOT grátis (de R$ 35,00)"></span>
+          <span class="flv-check"><svg><use href="#ic-check"/></svg></span>
+        </label>
+      </div>
+    </div>
+
+    <!-- 2. sabor -->
+    <div class="kb-step" id="passo-sabor">
+      <span class="kb-num" aria-hidden="true">2</span>
+      <div class="kb-panel">
+        <div class="kb-head">
+          <h3 class="kb-todo">Escolha 1 sabor<span class="kb-dot" id="kb-flavor-dot" aria-hidden="true"><svg><use href="#ic-check"/></svg></span></h3>
+        </div>
+        <div class="flv-viewport">
+          <div class="flv-track" role="radiogroup" aria-label="Sabor do pouch">
+            <label class="flv">
+              <input type="radio" name="sabor" value="menta" data-name="Menta">
+              <span class="flv-art">
+                <img src="../assets/seletor/sabor-menta.jpg" alt="Pouch DOT Menta" draggable="false">
+                <span class="flv-name">Menta</span>
+              </span>
+              <span class="flv-check"><svg><use href="#ic-check"/></svg></span>
+            </label>
+            <label class="flv" data-start>
+              <input type="radio" name="sabor" value="citrus" data-name="Citrus">
+              <span class="flv-art">
+                <img src="../assets/seletor/sabor-citrus.jpg" alt="Pouch DOT Citrus" draggable="false">
+                <span class="flv-name">Citrus</span>
+              </span>
+              <span class="flv-check"><svg><use href="#ic-check"/></svg></span>
+            </label>
+            <label class="flv">
+              <input type="radio" name="sabor" value="frutas-vermelhas" data-name="Frutas Vermelhas">
+              <span class="flv-art">
+                <img src="../assets/seletor/sabor-frutas-vermelhas.jpg" alt="Pouch DOT Frutas Vermelhas" draggable="false">
+                <span class="flv-name">Frutas Vermelhas</span>
+              </span>
+              <span class="flv-check"><svg><use href="#ic-check"/></svg></span>
+            </label>
+            <label class="flv">
+              <input type="radio" name="sabor" value="melancia" data-name="Melancia c/ Limão">
+              <span class="flv-art">
+                <img src="../assets/seletor/sabor-melancia.jpg" alt="Pouch DOT Melancia c/ Limão" draggable="false">
+                <span class="flv-name">Melancia c/ Limão</span>
+              </span>
+              <span class="flv-check"><svg><use href="#ic-check"/></svg></span>
+            </label>
+          </div>
+        </div>
+        <div class="flv-dots">
+          <button class="flv-dot" type="button" aria-label="Ver Menta"><span></span></button>
+          <button class="flv-dot" type="button" aria-label="Ver Citrus"><span></span></button>
+          <button class="flv-dot" type="button" aria-label="Ver Frutas Vermelhas"><span></span></button>
+          <button class="flv-dot" type="button" aria-label="Ver Melancia c/ Limão"><span></span></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. brindes -->
+    <div class="kb-step">
+      <span class="kb-num" aria-hidden="true">3</span>
+      <div class="kb-panel">
+        <div class="kb-head">
+          <h3>Seus brindes</h3>
+          <p>Já inclusos no kit</p>
+        </div>
+        <div class="kb-gifts">
+          <label class="flv flv--static opt--locked is-picked">
+            <input type="checkbox" name="brinde" value="saches-melancia" checked>
+            <span class="flv-art">
+              <img src="../assets/seletor/brinde-saches.jpg" alt="9 sachês DOT Melancia c/ Limão grátis">
+              <span class="flv-name">9 sachês Melancia c/ Limão</span>
+            </span>
+            <span class="flv-check"><svg><use href="#ic-check"/></svg></span>
+          </label>
+          <label class="flv flv--static opt--locked is-picked">
+            <input type="checkbox" name="brinde" value="mousepad" checked>
+            <span class="flv-art">
+              <img src="../assets/seletor/brinde-mousepad.jpg" alt="Mousepad DOT grátis">
+              <span class="flv-name">Mousepad DOT</span>
+            </span>
+            <span class="flv-check"><svg><use href="#ic-check"/></svg></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- CTA -->
+    <div class="kb-cta">
+      <p class="kb-summary">Seu kit: <b>1 Pouch <span id="kb-flavor">do sabor escolhido</span></b> + 9 sachês Melancia c/ Limão + Mousepad</p>
+      <p class="kb-total"><b>R$ 162,49</b><s>R$ 237,49</s></p>
+      <a class="btn-cart" id="kb-buy" href="#passo-sabor">Adicionar ao carrinho</a>
+      <p class="kb-warn" id="kb-warn" hidden>Escolha 1 sabor para continuar</p>
+    </div>
+  </div>
+</section>
+<!-- ============ FIM BLOCO 4 ============ -->
+
+<!-- ============ CARRINHO (abre de baixo para cima ao clicar em "Adicionar ao carrinho") ============ -->
+<div class="cart" id="cart" hidden>
+  <div class="cart-backdrop" data-cart-close></div>
+  <section class="cart-sheet" role="dialog" aria-modal="true" aria-labelledby="cart-title">
+    <div class="cart-head">
+      <h2 id="cart-title">Seu kit</h2>
+      <button class="cart-round" type="button" data-cart-close aria-label="Fechar carrinho">↓</button>
+    </div>
+    <div class="cart-list" id="cart-list">
+      <div class="cart-items" id="cart-items"></div>
+      <div class="cart-add-zone" id="cart-add-zone">
+        <div class="cart-picker" id="cart-picker" hidden>
+          <div class="cart-picker-bar">
+            <button class="cart-picker-item" type="button" data-flavor="menta" aria-label="Adicionar Menta"><img src="../assets/carrinho/icone-menta.png" alt=""><span aria-hidden="true">Menta</span></button>
+            <button class="cart-picker-item" type="button" data-flavor="frutas-vermelhas" aria-label="Adicionar Frutas Vermelhas"><img src="../assets/carrinho/icone-frutas-vermelhas.png" alt=""><span aria-hidden="true">Frutas Vermelhas</span></button>
+            <button class="cart-picker-item" type="button" data-flavor="melancia" aria-label="Adicionar Melancia c/ Limão"><img src="../assets/carrinho/icone-melancia.png" alt=""><span aria-hidden="true">Melancia c/&nbsp;Limão</span></button>
+            <button class="cart-picker-item" type="button" data-flavor="citrus" aria-label="Adicionar Citrus"><img src="../assets/carrinho/icone-citrus.png" alt=""><span aria-hidden="true">Citrus</span></button>
+          </div>
+        </div>
+        <button class="cart-add" id="cart-add" type="button" aria-label="Adicionar outro sabor" aria-expanded="false" aria-controls="cart-picker">
+          <span class="cart-add-plus" aria-hidden="true"></span>
+          <span class="cart-add-label" id="cart-add-label" aria-hidden="true">QUER ADICIONAR MAIS SABORES?</span>
+        </button>
+      </div>
+    </div>
+    <div class="cart-summary">
+      <div class="cart-summary-row"><span>Oferta aplicada</span><strong id="cart-total">R$ 162,49</strong></div>
+      <button class="cart-finish" id="cart-finish" type="button">FINALIZAR COMPRA <span aria-hidden="true">»</span></button>
+    </div>
+  </section>
+</div>
+<div class="cart-loading" id="cart-loading" role="status" aria-live="assertive" hidden>
+  <span class="cart-spinner" aria-hidden="true"></span>
+  <p>FINALIZANDO COMPRA</p>
+</div>
+<!-- ============ FIM CARRINHO ============ -->
+
+<script>
+// montagem do kit: oferta e brindes ficam travados; o sabor atualiza resumo e link do botão
+(() => {
+  document.querySelectorAll('.opt--locked input').forEach((input) => {
+    input.addEventListener('click', (e) => e.preventDefault());
+  });
+
+  // ---------- carrossel de sabores em loop infinito ----------
+  // os 4 cards originais (com os radios) ficam no grupo do meio; 3 grupos de cópias de cada lado.
+  // quando a rolagem para perto das cópias, a fileira salta 1 grupo — o conteúdo é idêntico, então não aparece.
+  const track = document.querySelector('.flv-track');
+  const originals = [...track.querySelectorAll('.flv')];
+  const COPIES = 3;
+  originals.forEach((card, i) => { card.dataset.index = i; });
+  const makeSet = () => originals.map((card) => {
+    const copy = card.cloneNode(true);
+    copy.querySelector('input').remove();
+    copy.removeAttribute('data-start');
+    copy.setAttribute('aria-hidden', 'true');
+    return copy;
+  });
+  for (let k = 0; k < COPIES; k++) {
+    track.prepend(...makeSet());
+    track.append(...makeSet());
+  }
+  const cards = [...track.querySelectorAll('.flv')];
+  const inputs = originals.map((card) => card.querySelector('input'));
+
+  const centerOf = (el) => { const r = el.getBoundingClientRect(); return r.left + r.width / 2; };
+  const offsetToCenter = (card) => centerOf(card) - centerOf(track);
+  const centerCard = (card, behavior) => track.scrollTo({ left: track.scrollLeft + offsetToCenter(card), behavior });
+  const nearest = (list) => list.reduce((a, b) => (Math.abs(offsetToCenter(b)) < Math.abs(offsetToCenter(a)) ? b : a));
+  const setWidth = () => centerOf(cards[originals.length]) - centerOf(cards[0]);
+
+  // mantém a rolagem no grupo do meio
+  const normalize = () => {
+    const w = setWidth();
+    const mid = centerOf(track);
+    const first = centerOf(originals[0]);
+    let delta = 0;
+    while (mid + delta < first - w / 2) delta += w;
+    while (mid + delta > first + w * 1.5) delta -= w;
+    if (delta) {
+      track.scrollLeft += delta;
+      if (drag) drag.left += delta;
+    }
+  };
+  let settle;
+  let anchor = null; // card mais perto do centro; usado para manter a posição se a largura mudar
+  track.addEventListener('scroll', () => {
+    anchor = nearest(cards);
+    updateDots(anchor);
+    const w = setWidth();
+    const mid = centerOf(track);
+    const first = centerOf(originals[0]);
+    if (mid < first - w * 1.5 || mid > first + w * 2.5) normalize(); // perto do fim das cópias: corrige já
+    clearTimeout(settle);
+    settle = setTimeout(() => { if (!drag) normalize(); }, 150);
+  }, { passive: true });
+
+  // arrastar com o mouse (no toque o navegador já rola sozinho)
+  let drag = null;
+  track.addEventListener('pointerdown', (e) => {
+    if (e.pointerType !== 'mouse') return;
+    drag = { x: e.clientX, left: track.scrollLeft, moved: false };
+  });
+  window.addEventListener('pointermove', (e) => {
+    if (!drag) return;
+    const dx = e.clientX - drag.x;
+    if (!drag.moved && Math.abs(dx) > 5) { drag.moved = true; track.classList.add('is-dragging'); }
+    if (drag.moved) track.scrollLeft = drag.left - dx;
+  });
+  window.addEventListener('pointerup', () => {
+    if (!drag) return;
+    const moved = drag.moved;
+    drag = null;
+    track.classList.remove('is-dragging');
+    normalize();
+    if (moved) track.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); }, { capture: true, once: true });
+  });
+
+  // pontinhos: marca o sabor mais perto do centro; clicar leva até ele pelo caminho mais curto
+  const dots = [...document.querySelectorAll('.flv-dot')];
+  function updateDots(near = nearest(cards)) {
+    const active = Number(near.dataset.index);
+    dots.forEach((dot, i) => dot.classList.toggle('is-active', i === active));
+  }
+  dots.forEach((dot, i) => dot.addEventListener('click', () => {
+    centerCard(nearest(cards.filter((card) => Number(card.dataset.index) === i)), 'smooth');
+  }));
+
+  // abre com o citrus do grupo do meio no centro
+  anchor = track.querySelector('[data-start]');
+  centerCard(anchor, 'instant');
+  updateDots(anchor);
+
+  // se a largura da fileira mudar (girar o celular, barra de rolagem aparecer), recentraliza o mesmo card
+  let lastWidth = track.clientWidth;
+  new ResizeObserver(() => {
+    if (track.clientWidth === lastWidth) return;
+    lastWidth = track.clientWidth;
+    centerCard(anchor, 'instant');
+    normalize();
+  }).observe(track);
+
+  // ---------- seleção ----------
+  const flavor = document.getElementById('kb-flavor');
+  const flavorDot = document.getElementById('kb-flavor-dot');
+  const buy = document.getElementById('kb-buy');
+  const warn = document.getElementById('kb-warn');
+  const flavorPanel = document.querySelector('#passo-sabor .kb-panel');
+  buy.addEventListener('click', (e) => {
+    e.preventDefault();
+    if (inputs.some((input) => input.checked)) { openCart(); return; }
+    warn.hidden = false;
+    flavorPanel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    flavorPanel.classList.remove('is-alert');
+    void flavorPanel.offsetWidth;
+    flavorPanel.classList.add('is-alert');
+  });
+
+  // clique num card (original ou cópia) marca o sabor e centraliza o card tocado, sem o salto do foco do navegador
+  let tapped = null;
+  track.addEventListener('click', (e) => {
+    const card = e.target.closest('.flv');
+    if (!card || e.target.matches('input')) return;
+    e.preventDefault();
+    const input = inputs[Number(card.dataset.index)];
+    tapped = card;
+    if (input.checked) { centerCard(card, 'smooth'); return; }
+    input.checked = true;
+    input.dispatchEvent(new Event('change', { bubbles: true }));
+  });
+  inputs.forEach((input, i) => {
+    input.addEventListener('change', () => {
+      cards.forEach((card) => card.classList.toggle('is-picked', Number(card.dataset.index) === i));
+      track.classList.add('has-pick');
+      const target = tapped && Number(tapped.dataset.index) === i ? tapped : nearest(cards.filter((card) => Number(card.dataset.index) === i));
+      tapped = null;
+      centerCard(target, 'smooth');
+      flavorDot.classList.add('is-done');
+      warn.hidden = true;
+      flavor.textContent = input.dataset.name;
+    });
+  });
+  const clearFlavor = () => {
+    inputs.forEach((input) => { input.checked = false; });
+    cards.forEach((card) => card.classList.remove('is-picked'));
+    track.classList.remove('has-pick');
+    flavorDot.classList.remove('is-done');
+    flavor.textContent = 'do sabor escolhido';
+  };
+  const selectFlavor = (key) => {
+    const input = inputs.find((el) => el.value === key);
+    if (!input || input.checked) return;
+    input.checked = true;
+    input.dispatchEvent(new Event('change'));
+  };
+  // se o navegador restaurar um sabor marcado (voltar/recarregar), aplica o visual
+  const restored = inputs.find((input) => input.checked);
+  if (restored) restored.dispatchEvent(new Event('change'));
+
+  // ---------- carrinho ----------
+  // Link de compra da Yampi: /r/TOKEN:QUANTIDADE,TOKEN:QUANTIDADE (mesmos produtos da oferta5)
+  const YAMPI_CHECKOUT_URL = 'https://seguro.minhadot.com/r/';
+  // TODO: cupom da Yampi que adiciona os 9 sachês + mousepad como brinde. Enquanto estiver vazio,
+  // o "Finalizar compra" só mostra o carregamento e não sai da página.
+  const YAMPI_KIT_COUPON = '';
+  const FLAVORS = {
+    menta: { name: 'Menta', token: 'T7OSNI4X3Z' },
+    citrus: { name: 'Citrus', token: '5IM1U6QS0Q' },
+    'frutas-vermelhas': { name: 'Frutas Vermelhas', token: 'KEWK5304MU' },
+    melancia: { name: 'Melancia c/ Limão', token: 'R5F5MQP29R' },
+  };
+  const GIFTS = [
+    { name: 'Mousepad DOT', img: 'brinde-mousepad.jpg', oldCents: 3500 },
+    { name: '9 sachês Melancia c/ Limão', img: 'brinde-saches.jpg', oldCents: 4000 },
+  ];
+  // desconto progressivo por quantidade de pouches (mesma tabela da oferta5)
+  const REGULAR_POUCH_CENTS = 16249;
+  const POUCH_TOTALS_CENTS = { 1: 16249, 2: 29998, 3: 37491, 4: 49988 };
+  const EXTRA_POUCH_CENTS = 12497;
+  const totalCents = (count) => {
+    if (count <= 0) return 0;
+    if (count <= 4) return POUCH_TOTALS_CENTS[count];
+    return POUCH_TOTALS_CENTS[4] + (count - 4) * EXTRA_POUCH_CENTS;
+  };
+  const brl = (cents) => new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(cents / 100);
+
+  const cart = document.getElementById('cart');
+  const cartList = document.getElementById('cart-list');
+  const cartItems = document.getElementById('cart-items');
+  const cartTotal = document.getElementById('cart-total');
+  const addZone = document.getElementById('cart-add-zone');
+  const addBtn = document.getElementById('cart-add');
+  const addLabel = document.getElementById('cart-add-label');
+  const picker = document.getElementById('cart-picker');
+  const finishBtn = document.getElementById('cart-finish');
+  const loading = document.getElementById('cart-loading');
+  const closeBtn = cart.querySelector('.cart-round');
+  let pouches = []; // chaves dos sabores; o primeiro é o sabor escolhido no passo 2
+  let freshIndex = -1;
+  let closeTimer;
+
+  const el = (tag, className, text) => {
+    const node = document.createElement(tag);
+    if (className) node.className = className;
+    if (text != null) node.textContent = text;
+    return node;
+  };
+  const itemRow = ({ thumbClass, img, kicker, name, oldPrice, price, free, onRemove, isNew }) => {
+    const row = el('div', `cart-item${isNew ? ' is-new' : ''}`);
+    const thumb = el('span', thumbClass);
+    const pic = el('img');
+    pic.src = img;
+    pic.alt = '';
+    thumb.append(pic);
+    const info = el('span', 'cart-info');
+    const priceRow = el('span', `cart-price${free ? ' is-free' : ''}`);
+    if (oldPrice) priceRow.append(el('s', '', oldPrice));
+    priceRow.append(el('strong', '', price));
+    info.append(el('small', '', kicker), el('b', '', name), priceRow);
+    row.append(thumb, info);
+    if (onRemove) {
+      const remove = el('button', 'cart-round cart-remove', '×');
+      remove.type = 'button';
+      remove.setAttribute('aria-label', `Remover ${name}`);
+      remove.addEventListener('click', onRemove);
+      row.append(remove);
+    }
+    return row;
+  };
+  const render = () => {
+    const count = pouches.length;
+    const total = totalCents(count);
+    const base = Math.floor(total / count);
+    const remainder = total % count;
+    cartItems.replaceChildren(
+      ...GIFTS.map((gift) => itemRow({
+        thumbClass: 'cart-thumb',
+        img: `../assets/carrinho/${gift.img}`,
+        kicker: 'Brinde',
+        name: gift.name,
+        oldPrice: brl(gift.oldCents),
+        price: 'GRÁTIS',
+        free: true,
+      })),
+      ...pouches.map((key, i) => {
+        const cents = base + (i < remainder ? 1 : 0);
+        return itemRow({
+          thumbClass: 'cart-thumb',
+          img: `../assets/carrinho/pouch-${key}.jpg`,
+          kicker: '1 × sabor',
+          name: FLAVORS[key].name,
+          oldPrice: cents < REGULAR_POUCH_CENTS ? brl(REGULAR_POUCH_CENTS) : null,
+          price: brl(cents),
+          onRemove: () => removePouch(i),
+          isNew: i === freshIndex,
+        });
+      }),
+    );
+    freshIndex = -1;
+    cartTotal.textContent = brl(total);
+    addLabel.textContent = count <= 1 ? 'QUER ADICIONAR MAIS SABORES?' : 'MAIS SABORES';
+  };
+
+  const setPicker = (open) => {
+    picker.hidden = !open;
+    addBtn.classList.toggle('is-open', open);
+    addBtn.setAttribute('aria-expanded', String(open));
+  };
+  addBtn.addEventListener('click', () => setPicker(picker.hidden));
+  picker.addEventListener('click', (e) => {
+    const item = e.target.closest('[data-flavor]');
+    if (!item) return;
+    pouches.push(item.dataset.flavor);
+    freshIndex = pouches.length - 1;
+    setPicker(false);
+    render();
+    requestAnimationFrame(() => {
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      cartList.scrollTo({ top: cartList.scrollHeight, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  });
+
+  const removePouch = (index) => {
+    if (index >= pouches.length) return;
+    pouches.splice(index, 1);
+    if (!pouches.length) { // tirou o último pouch: fecha o carrinho e volta para a escolha do sabor
+      closeCart();
+      clearFlavor();
+      return;
+    }
+    if (index === 0) selectFlavor(pouches[0]);
+    setPicker(false);
+    render();
+  };
+
+  const lockPage = (lock) => {
+    document.documentElement.style.overflow = lock ? 'hidden' : '';
+    document.body.style.overflow = lock ? 'hidden' : '';
+  };
+  function openCart() {
+    const chosen = inputs.find((input) => input.checked);
+    if (!chosen) return;
+    if (pouches.length) pouches[0] = chosen.value;
+    else pouches = [chosen.value];
+    setPicker(false);
+    render();
+    clearTimeout(closeTimer);
+    cart.hidden = false;
+    void cart.offsetWidth; // aplica a posição inicial antes de animar
+    cart.classList.add('is-open');
+    lockPage(true);
+    cartList.scrollTop = 0;
+    closeBtn.focus({ preventScroll: true });
+  }
+  function closeCart() {
+    if (cart.hidden) return;
+    cart.classList.remove('is-open');
+    setPicker(false);
+    lockPage(false);
+    clearTimeout(closeTimer);
+    closeTimer = setTimeout(() => { cart.hidden = true; }, 450);
+    buy.focus({ preventScroll: true });
+  }
+  cart.addEventListener('click', (e) => {
+    if (e.target.closest('[data-cart-close]')) { closeCart(); return; }
+    if (!picker.hidden && !addZone.contains(e.target)) setPicker(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape' || cart.hidden) return;
+    if (!picker.hidden) setPicker(false);
+    else closeCart();
+  });
+
+  // finalizar: monta o link da Yampi com os pouches, o cupom dos brindes e as UTMs do anúncio
+  let leaving = false;
+  finishBtn.addEventListener('click', () => {
+    if (leaving || !pouches.length) return;
+    const quantities = new Map();
+    pouches.forEach((key) => quantities.set(key, (quantities.get(key) || 0) + 1));
+    const items = [...quantities].map(([key, qty]) => `${FLAVORS[key].token}:${qty}`);
+    const url = new URL(YAMPI_CHECKOUT_URL + items.join(','));
+    if (YAMPI_KIT_COUPON) url.searchParams.set('promocode', YAMPI_KIT_COUPON);
+    new URLSearchParams(window.location.search).forEach((value, key) => {
+      if (key.startsWith('utm_')) url.searchParams.set(key, value);
+    });
+    leaving = true;
+    loading.hidden = false;
+    if (!YAMPI_KIT_COUPON) { // protótipo: sem o cupom dos brindes ainda, não sai da página
+      console.info('[carrinho] checkout (cupom dos brindes pendente):', url.toString());
+      setTimeout(() => { loading.hidden = true; leaving = false; }, 1500);
+      return;
+    }
+    // se a página não sair (rede lenta, bloqueio), libera para tentar de novo
+    setTimeout(() => { loading.hidden = true; leaving = false; }, 15000);
+    requestAnimationFrame(() => requestAnimationFrame(() => { window.location.href = url.toString(); }));
+  });
+  // voltando da Yampi pelo botão voltar, o Safari restaura a página como estava: destrava a tela
+  window.addEventListener('pageshow', (e) => {
+    if (e.persisted) { loading.hidden = true; leaving = false; }
+  });
+})();
+</script>
+</body>
+</html>
