@@ -107,7 +107,7 @@
     var giroTimer = null;
     var giroIdx = 0;
 
-    var TITULOS = ['Escolha seus 3 pouches', 'Seu 4º sabor é grátis', 'Você ganhou os brindes!'];
+    var TITULOS = ['Escolha seus 3 pouches', 'Seu 4º sabor é grátis', 'Você garantiu os brindes'];
 
     var PAGOS      = 3;   // quantas unidades a etapa 1 distribui
     var contas     = [].slice.call(modal.querySelectorAll('[data-conta]'));
