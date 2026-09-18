@@ -556,6 +556,62 @@ button { font: inherit; color: inherit; }
 
 .pick-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
 
+/* ---------- Contador dos 3 pouches pagos ----------
+   Os 4 sabores em fileira, cada um com - / +, e a pessoa distribui as 3
+   unidades como quiser (3 do mesmo sabor inclusive). Em 4 colunas o espaco
+   por cartao fica em ~80px no iPhone, entao os botoes sao de 22px e o nome
+   vai curto ("Frutas", nao "Frutas Vermelhas"). */
+/* o trilho iguala a altura das tres telas pela mais alta (o 2x2 dos sabores),
+   e a do contador e bem mais baixa -- centralizar evita o vazio cair todo
+   embaixo do contador */
+.modal__panel--conta { display: flex; flex-direction: column; justify-content: center; }
+
+.conta-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 7px; }
+
+.conta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 8px 3px 10px;
+  border: 2px solid var(--navy-14);
+  border-radius: var(--radius-sm);
+  background: var(--cream-card);
+  transition: border-color .18s ease;
+}
+
+.conta.is-on { border-color: var(--navy); }
+.conta__media { display: block; width: 100%; }
+.conta__media img { width: 100%; height: clamp(56px, 11dvh, 92px); object-fit: contain; }
+.conta__name { font-size: 11px; font-weight: 700; line-height: 1.1; text-align: center; }
+.conta__steps { display: flex; align-items: center; gap: 1px; }
+
+.conta__btn {
+  display: grid;
+  place-items: center;
+  width: 22px; height: 22px;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: var(--navy-08);
+  color: var(--navy);
+  cursor: pointer;
+}
+
+.conta__btn:disabled { opacity: .28; cursor: default; }
+.conta__qtd { min-width: 16px; text-align: center; font-size: 15px; font-weight: 700; font-variant-numeric: tabular-nums; }
+
+.conta-total { margin: 16px 0 0; text-align: center; font-size: 14px; font-weight: 500; }
+.conta-total strong { font-size: 17px; color: var(--blue); }
+/* quando fecha as 3, o contador vira confirmacao em vez de cobranca */
+.conta-total.is-full strong { color: #2fa84f; }
+
+@media (min-width: 992px) {
+  .conta__name { font-size: 13px; }
+  .conta__btn  { width: 26px; height: 26px; }
+  .conta__qtd  { min-width: 22px; font-size: 17px; }
+}
+
 .pick {
   position: relative;
   display: flex; flex-direction: column; gap: 8px;

@@ -79,14 +79,15 @@
   setInterval(tick, 1000);
 
   /* ---------- Popup de sabores -----------------------------------
-     5 etapas: o sabor de cada um dos 4 pouches (o 4o e o gratis) e os brindes.
-     Escolher avanca sozinho; a seta volta; a barra marca o progresso.
+     3 etapas: os 3 pouches pagos num contador por sabor, o sabor do 4o pouch
+     (o gratis) no 2x2 de sempre, e os brindes.
+     Fechar a etapa avanca sozinho; a seta volta; a barra marca o progresso.
 
-     O numero de etapas sai do proprio HTML (paineis.length), entao mudar a
-     oferta para 2 ou 5 pouches e so mexer no markup -- este arquivo segue.
+     O contador distribui 3 unidades entre os 4 sabores, do jeito que a pessoa
+     quiser -- 3 do mesmo sabor inclusive. O + trava quando as 3 estao dadas.
 
      A escolha sai por dois caminhos:
-       - data-pouch1 ... data-pouch4 no botao de checkout
+       - data-pagos ("Menta:2, Citrus:1") e data-pouch4 no botao de checkout
        - o link de compra da Yampi, quando o botao tiver data-checkout
   ---------------------------------------------------------------- */
   var modal = document.getElementById('flavorModal');
@@ -106,12 +107,13 @@
     var giroTimer = null;
     var giroIdx = 0;
 
-    var TITULOS = ['Escolha seu 1º sabor', 'Escolha seu 2º sabor', 'Escolha seu 3º sabor',
-                   'Seu 4º sabor é grátis', 'Você ganhou os brindes!'];
+    var TITULOS = ['Escolha seus 3 pouches', 'Seu 4º sabor é grátis', 'Você ganhou os brindes!'];
 
-    // um grupo de radio por pouch; a etapa dos brindes e sempre a ultima
-    var GRUPOS = ['pouch1', 'pouch2', 'pouch3', 'pouch4'];
-    var ULTIMA = paineis.length;
+    var PAGOS      = 3;   // quantas unidades a etapa 1 distribui
+    var contas     = [].slice.call(modal.querySelectorAll('[data-conta]'));
+    var contaTotal = modal.querySelector('[data-conta-total]');
+    var contaLinha = modal.querySelector('.conta-total');
+    var ULTIMA     = paineis.length;
     var etapa = 1;
     var anterior = null;   // quem tinha o foco antes de abrir
 
@@ -119,26 +121,36 @@
       return modal.querySelector('input[name="' + grupo + '"]:checked');
     }
 
+    function qtd(caixa) { return Number(caixa.dataset.qtd) || 0; }
+
+    function somaPagos() {
+      return contas.reduce(function (t, caixa) { return t + qtd(caixa); }, 0);
+    }
+
     /* Link de compra da Yampi: /r/TOKEN:QTD,TOKEN:QTD
-       Vao os 4 pouches escolhidos, cada um com o token no proprio data-yampi.
-       Sabor repetido vira quantidade 2 -- ou 4, se a pessoa escolher o mesmo
-       nos quatro. Os brindes da ultima etapa entram aqui so se ganharem um
-       data-yampi; hoje estao sem token de proposito, porque quem os coloca no
-       pedido e a regra da Yampi, nao o link. O cupom sai do data-promocode do
-       botao (vazio = sem cupom), e as utm_* do anuncio vao junto para a Yampi
-       atribuir a venda a campanha. */
+       Vao as 3 unidades dos contadores mais o pouch gratis, somadas por token:
+       o mesmo sabor nos quatro vira TOKEN:4. Os brindes da ultima etapa entram
+       aqui so se ganharem um data-yampi; hoje estao sem token de proposito,
+       porque quem os coloca no pedido e a regra da Yampi, nao o link. O cupom
+       sai do data-promocode do botao (vazio = sem cupom), e as utm_* do anuncio
+       vao junto para a Yampi atribuir a venda a campanha. */
     var brindes = [].slice.call(modal.querySelectorAll('.pick-grid--gifts [data-yampi]'));
 
-    function linkYampi(base, escolhas) {
-      var qtd = {};
+    function linkYampi(base) {
+      var acc = {};
       var ordem = [];
-      escolhas.concat(brindes).forEach(function (el) {
-        var token = el.dataset.yampi;
-        if (!qtd[token]) { qtd[token] = 0; ordem.push(token); }
-        qtd[token]++;
-      });
 
-      var url = new URL(base + ordem.map(function (t) { return t + ':' + qtd[t]; }).join(','));
+      function soma(token, n) {
+        if (!acc[token]) { acc[token] = 0; ordem.push(token); }
+        acc[token] += n;
+      }
+
+      contas.forEach(function (caixa) { if (qtd(caixa)) soma(caixa.dataset.yampi, qtd(caixa)); });
+      var gratis = escolhido('pouch4');
+      if (gratis) soma(gratis.dataset.yampi, 1);
+      brindes.forEach(function (el) { soma(el.dataset.yampi, 1); });
+
+      var url = new URL(base + ordem.map(function (t) { return t + ':' + acc[t]; }).join(','));
       if (checkout.dataset.promocode) url.searchParams.set('promocode', checkout.dataset.promocode);
       new URLSearchParams(location.search).forEach(function (valor, chave) {
         if (chave.indexOf('utm_') === 0) url.searchParams.set(chave, valor);
@@ -179,18 +191,32 @@
         i.parentNode.classList.toggle('is-on', i.checked);
       });
 
-      var escolhas = GRUPOS.map(escolhido);
+      var total  = somaPagos();
+      var gratis = escolhido('pouch4');
+
+      contas.forEach(function (caixa) {
+        var n = qtd(caixa);
+        caixa.querySelector('[data-qtd-txt]').textContent = n;
+        caixa.classList.toggle('is-on', n > 0);
+        caixa.querySelector('[data-menos]').disabled = n === 0;
+        caixa.querySelector('[data-mais]').disabled  = total >= PAGOS;
+      });
+
+      if (contaTotal) contaTotal.textContent = total;
+      if (contaLinha) contaLinha.classList.toggle('is-full', total === PAGOS);
 
       if (checkout) {
-        GRUPOS.forEach(function (grupo, i) {
-          checkout.dataset[grupo] = escolhas[i] ? escolhas[i].value : '';
-        });
+        checkout.dataset.pagos = contas
+          .filter(function (caixa) { return qtd(caixa); })
+          .map(function (caixa) { return caixa.dataset.sabor + ':' + qtd(caixa); })
+          .join(', ');
+        checkout.dataset.pouch4 = gratis ? gratis.value : '';
 
         var base = checkout.dataset.checkout;
-        // so monta o link com os 4 sabores na mao: link pela metade leva
-        // carrinho pela metade
-        if (base && escolhas.every(Boolean)) {
-          try { checkout.href = linkYampi(base, escolhas); } catch (e) {}
+        // so monta o link com a etapa 1 fechada e o gratis escolhido: link
+        // pela metade leva carrinho pela metade
+        if (base && total === PAGOS && gratis) {
+          try { checkout.href = linkYampi(base); } catch (e) {}
         }
       }
     }
@@ -225,9 +251,8 @@
 
     // ate onde da para avancar: so passa da etapa se ela ja foi respondida
     function limite() {
-      for (var i = 0; i < GRUPOS.length; i++) {
-        if (!escolhido(GRUPOS[i])) return i + 1;
-      }
+      if (somaPagos() < PAGOS) return 1;
+      if (!escolhido('pouch4')) return 2;
       return ULTIMA;
     }
 
@@ -330,12 +355,32 @@
       var input = e.target;
       if (!input.matches || !input.matches('.pick input')) return;
       render();
-      var salto = GRUPOS.indexOf(input.name) + 2;
+      var salto = ULTIMA;   // so o radio do pouch gratis sobrou, e ele leva aos brindes
       setTimeout(function () { if (!modal.hidden) ir(salto); }, 320);
     });
 
+    /* + e - : distribuem as 3 unidades. Fechar as 3 avanca sozinho, como o
+       radio ja fazia -- mas so quando o toque foi no +, senao tirar e repor
+       uma unidade jogaria a pessoa para a frente sem ela ter pedido. */
+    modal.addEventListener('click', function (e) {
+      var btn = e.target.closest && e.target.closest('[data-mais], [data-menos]');
+      if (!btn) return;
+
+      var caixa = btn.closest('[data-conta]');
+      var mais  = btn.hasAttribute('data-mais');
+      if (mais && somaPagos() >= PAGOS) return;
+
+      caixa.dataset.qtd = mais ? qtd(caixa) + 1 : Math.max(0, qtd(caixa) - 1);
+      render();
+
+      if (mais && somaPagos() === PAGOS) {
+        setTimeout(function () { if (!modal.hidden) ir(2); }, 380);
+      }
+    });
+
     cta.addEventListener('click', function () {
-      if (etapa <= GRUPOS.length && !escolhido(GRUPOS[etapa - 1])) return;
+      if (etapa === 1 && somaPagos() < PAGOS) return;
+      if (etapa === 2 && !escolhido('pouch4')) return;
       if (etapa < ULTIMA) { ir(etapa + 1); return; }
       // navega pela URL, nao por checkout.click(): aquele botao abre o
       // popup, entao clicar nele aqui reabriria tudo na etapa 1
