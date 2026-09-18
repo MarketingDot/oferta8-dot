@@ -751,6 +751,18 @@ button { font: inherit; color: inherit; }
 
 .pick-grid--gifts .pick--wide { grid-column: 1 / -1; justify-self: center; width: min(100%, 300px); }
 
+/* resumo da composicao no topo da tela de brindes */
+.resumo {
+  margin: 0 0 14px;
+  text-align: center;
+  font-size: 13px;
+  font-style: italic;
+  line-height: 1.35;
+  color: var(--navy);
+}
+.resumo strong { font-style: normal; font-weight: 700; color: var(--blue); }
+@media (min-width: 992px) { .resumo { font-size: 15px; } }
+
 /* rodape das etapas 1 e 2: mostra o que ja esta garantido enquanto o
    botao de finalizar ainda nao aparece (ele so entra na etapa 3) */
 /* barra e botao ocupam a MESMA celula da grade: o rodape passa a medir
