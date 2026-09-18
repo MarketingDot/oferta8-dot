@@ -932,7 +932,7 @@ button { font: inherit; color: inherit; }
 
 @media (min-width: 992px) {
   .gifts__head   { margin-bottom: 28px; }
-  .gifts__grid   { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .gifts__grid   { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
   .gifts__slider { display: none; }
   .gift-card__title { font-size: 24px; }
   .gift-card__lead  { font-size: 17px; }
