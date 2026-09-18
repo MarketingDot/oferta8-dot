@@ -395,11 +395,10 @@
     render();
   }
 
-  /* ---------- Rodizio de sabores nos pouches do card --------------
-     As 4 imagens de cada pouch ficam empilhadas e uma aparece por vez,
-     para mostrar que o sabor e escolha da pessoa. No HTML cada pouch comeca
-     um sabor a frente do anterior, e o indice e o mesmo para todos -- entao
-     os 4 nunca mostram o mesmo sabor ao mesmo tempo.
+  /* ---------- Rodizio de sabores no pouch gratis do card ----------
+     As 4 imagens ficam empilhadas e uma aparece por vez, para mostrar que o
+     sabor e escolha da pessoa. So o 4o pouch gira: as tres miniaturas dos
+     pouches pagos sao fixas, cada uma num sabor.
      So gira com a caixa a vista, e nao gira para quem pediu menos movimento.
   ---------------------------------------------------------------- */
   var pouchGiro = [].slice.call(document.querySelectorAll('.gift-list__img--giro'));
