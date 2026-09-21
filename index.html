@@ -211,10 +211,11 @@
             <span class="reserved">Oferta reservada</span>
           </div>
 
-          <!-- data-checkout: link de compra da Yampi (/r/). data-promocode: cupom que abate o preco.
-               VAZIO DE PROPOSITO ate a regra do "compre 3 leve 4" existir na Yampi: sem ela o
-               carrinho chega com os 4 pouches cheios e nao fecha os R$ 399,90. -->
-          <a class="btn" href="#" id="checkoutBtn" data-open-flavors data-checkout="https://seguro.minhadot.com/r/" data-promocode="">
+          <!-- data-checkout: link de compra da Yampi (/r/). O cupom nao fica aqui: e um por
+               sabor, no data-cupom da etapa 2 do popup, como na oferta 5. A conta dos R$ 399,90:
+               3 pouches (R$ 487,47) + kit mousepad+teclado (R$ 80) - desconto progressivo da loja
+               (R$ 112,56) - cupom (R$ 55,01). -->
+          <a class="btn" href="#" id="checkoutBtn" data-open-flavors data-checkout="https://seguro.minhadot.com/r/">
             Comprar agora
             <svg width="22" height="22" aria-hidden="true"><use href="#i-arrow"/></svg>
           </a>
@@ -547,27 +548,32 @@
 
       <fieldset class="modal__panel" data-step="2" inert aria-hidden="true">
         <legend class="sr-only">Sabor do 4º pouch (grátis)</legend>
+        <!-- data-cupom: o cupom da Yampi deste sabor, como na oferta 5. O pouch gratis nao vai
+             na lista do link: quem poe o POUCH <SABOR> (OFERTA) no pedido e o cupom, como
+             brinde. Se fosse tambem pelo token, o carrinho mostrava o pouch duas vezes.
+             Sao os cupons da oferta 8 (o "KT" no meio): alem do brinde, eles abatem o preco
+             ate os R$ 399,90. Os da oferta 5 sao os mesmos sem o KT e so poem o brinde -->
         <div class="pick-grid">
           <label class="pick">
-            <input type="radio" name="pouch4" value="menta" data-yampi="T7OSNI4X3Z">
+            <input type="radio" name="pouch4" value="menta" data-cupom="CAWM7MG103KTCW83P4">
             <span class="pick__media"><img src="assets/sabor-menta.webp" alt="" loading="lazy"></span>
             <span class="pick__name">Menta</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </label>
           <label class="pick">
-            <input type="radio" name="pouch4" value="frutas" data-yampi="KEWK5304MU">
+            <input type="radio" name="pouch4" value="frutas" data-cupom="CAWM7MG203KTCW83P4">
             <span class="pick__media"><img src="assets/sabor-frutas.webp" alt="" loading="lazy"></span>
             <span class="pick__name">Frutas Vermelhas</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </label>
           <label class="pick">
-            <input type="radio" name="pouch4" value="citrus" data-yampi="5IM1U6QS0Q">
+            <input type="radio" name="pouch4" value="citrus" data-cupom="CAWM7MG303KTCW83P4">
             <span class="pick__media"><img src="assets/sabor-citrus.webp" alt="" loading="lazy"></span>
             <span class="pick__name">Citrus</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </label>
           <label class="pick">
-            <input type="radio" name="pouch4" value="melancia" data-yampi="R5F5MQP29R">
+            <input type="radio" name="pouch4" value="melancia" data-cupom="CAWM7MG403KTCW83P4">
             <span class="pick__media"><img src="assets/sabor-melancia.webp" alt="" loading="lazy"></span>
             <span class="pick__name">Melancia com Limão</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -587,7 +593,9 @@
             <span class="pick__name">Apoio de Teclado DOT</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
-          <div class="pick is-won">
+          <!-- o KIT MOUSEPAD+TECLADOPAD da Yampi leva os dois brindes num produto so, entao
+               o token fica so neste cartao: nos dois, o link pediria 2 kits -->
+          <div class="pick is-won" data-yampi="DAKN0PBXKF">
             <span class="pick__media"><img src="assets/brinde-mousepad.webp" alt="" loading="lazy"></span>
             <span class="pick__name">Mousepad DOT</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>

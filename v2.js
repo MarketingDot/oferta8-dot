@@ -132,13 +132,14 @@
       return somaPagos() === PAGOS && !!escolhido('pouch4');
     }
 
-    /* Link de compra da Yampi: /r/TOKEN:QTD,TOKEN:QTD
-       Vao as 3 unidades dos contadores mais o pouch gratis, somadas por token:
-       o mesmo sabor nos quatro vira TOKEN:4. Os brindes da ultima etapa entram
-       aqui so se ganharem um data-yampi; hoje estao sem token de proposito,
-       porque quem os coloca no pedido e a regra da Yampi, nao o link. O cupom
-       sai do data-promocode do botao (vazio = sem cupom), e as utm_* do anuncio
-       vao junto para a Yampi atribuir a venda a campanha. */
+    /* Link de compra da Yampi: /r/TOKEN:QTD,TOKEN:QTD?promocode=CUPOM
+       Vao as 3 unidades dos contadores, somadas por token (o mesmo sabor duas
+       vezes vira TOKEN:2), e o kit de brindes, que vem do data-yampi da ultima
+       etapa. O pouch gratis segue a oferta 5: nao entra na lista, vai so o cupom
+       do sabor escolhido (data-cupom), e e a Yampi que poe o POUCH (OFERTA) como
+       brinde. Mandar tambem o token dele duplicava o pouch no carrinho. O frete
+       gratis nao tem token: e regra da Yampi. As utm_* do anuncio vao junto para
+       a Yampi atribuir a venda a campanha. */
     var brindes = [].slice.call(modal.querySelectorAll('.pick-grid--gifts [data-yampi]'));
 
     function linkYampi(base) {
@@ -151,12 +152,11 @@
       }
 
       contas.forEach(function (caixa) { if (qtd(caixa)) soma(caixa.dataset.yampi, qtd(caixa)); });
-      var gratis = escolhido('pouch4');
-      if (gratis) soma(gratis.dataset.yampi, 1);
       brindes.forEach(function (el) { soma(el.dataset.yampi, 1); });
 
       var url = new URL(base + ordem.map(function (t) { return t + ':' + acc[t]; }).join(','));
-      if (checkout.dataset.promocode) url.searchParams.set('promocode', checkout.dataset.promocode);
+      var gratis = escolhido('pouch4');
+      if (gratis && gratis.dataset.cupom) url.searchParams.set('promocode', gratis.dataset.cupom);
       new URLSearchParams(location.search).forEach(function (valor, chave) {
         if (chave.indexOf('utm_') === 0) url.searchParams.set(chave, valor);
       });
@@ -451,8 +451,8 @@
       else if (!e.shiftKey && document.activeElement === ultimo) { e.preventDefault(); primeiro.focus(); }
     });
 
-    // os dois CTAs da pagina sempre abrem o popup -- o do card e o do fim da
-    // secao de beneficios. Quem leva para a Yampi e so o Finalizar compra.
+    // os dois CTAs da pagina sempre abrem o popup -- o do card e o do fim do
+    // bloco como tomar. Quem leva para a Yampi e so o Finalizar compra.
     // Pular direto para o checkout quando os sabores ja estavam marcados
     // quebrava na volta do checkout: o navegador restaura os radios mas nao o
     // link, e o clique caia no href="#" sem abrir nada.
