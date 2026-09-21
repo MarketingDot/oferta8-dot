@@ -2,7 +2,8 @@
    DOT ENERGY — Oferta 8 · Compre 3, Leve 4
    Segue a estrutura da RYZE Ritual Set em 4 blocos:
    header+countdown → oferta (título+galeria+card+bullets)
-   → carrossel de brindes → benefícios.
+   → carrossel de brindes → benefícios, mais o "como tomar"
+   da oferta 7 fechando com o CTA 2.
    Breakpoint único: 992px.
    ============================================================ */
 
@@ -954,15 +955,71 @@ button { font: inherit; color: inherit; }
 .benefit h3 { margin: 0; font-size: 20px; font-weight: 700; line-height: 1.15; }
 .benefit p  { margin: 0; font-size: 15px; line-height: 1.35; }
 
-.benefits .cta-block { margin-top: 32px; }
-
 @media (min-width: 992px) {
   /* 4 itens: 3 colunas deixariam um orfao sozinho na segunda linha */
   .benefits__grid { grid-template-columns: repeat(4, 1fr); gap: 44px 32px; margin-top: 32px; }
   .benefit h3 { font-size: 26px; }
   .benefit p  { font-size: 17px; }
-  .benefits .cta-block { margin-top: 48px; }
-  .benefits .btn { min-width: 420px; width: auto; }
+}
+
+/* ============================================================
+   5 · COMO TOMAR
+   Os 4 passos da oferta 7 com a cara desta pagina: cabecalho
+   centralizado e cards creme como os dos brindes. No celular
+   fica 2x2, e nao carrossel, para os quatro passos aparecerem
+   juntos e em ordem.
+   ============================================================ */
+.how { background: var(--cream); }
+
+.how__head { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; margin-bottom: 20px; }
+
+.how__grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 0; padding: 0; list-style: none; }
+
+.step {
+  display: flex;
+  flex-direction: column;
+  background: var(--cream-card);
+  border: 1px solid var(--navy-08);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+/* foto de ponta a ponta. As fotos ja sao 4:5, entao o cover nao corta nada */
+.step__media { --frame-pad: 0px; aspect-ratio: 4 / 5; }
+.step__media > img { object-fit: cover; }
+
+/* numero do passo no canto da foto: amarelo com a sombra navy do botao */
+.step__num {
+  position: absolute;
+  top: 10px; left: 10px;
+  display: grid;
+  place-items: center;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  background: var(--yellow);
+  color: var(--navy);
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1;
+  box-shadow: 0 3px 0 0 var(--navy);
+}
+
+.step__body  { display: flex; flex-direction: column; gap: 4px; padding: 12px 10px 16px; text-align: center; }
+/* Caixa alta pede um pouco de tracking, como no titulo dos brindes */
+.step__title { margin: 0; font-size: 15px; font-weight: 700; line-height: 1.2; letter-spacing: .02em; text-transform: uppercase; text-wrap: balance; }
+.step__text  { margin: 0; font-size: 14px; line-height: 1.35; text-wrap: balance; }
+
+.how .cta-block { margin-top: 32px; }
+
+@media (min-width: 992px) {
+  .how__head { margin-bottom: 28px; }
+  .how__grid { grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .step__num { top: 14px; left: 14px; width: 40px; height: 40px; font-size: 20px; }
+  .step__body  { gap: 6px; padding: 16px 16px 20px; }
+  .step__title { font-size: 20px; }
+  .step__text  { font-size: 17px; }
+  .how .cta-block { margin-top: 48px; }
+  .how .btn { min-width: 420px; width: auto; }
 }
 
 /* ============================================================
