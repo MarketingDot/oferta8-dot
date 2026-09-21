@@ -46,7 +46,7 @@ body {
   padding-top: calc(var(--nav-h) + var(--bar-h));
   background: var(--cream);
   color: var(--navy);
-  font-family: "Space Grotesk", system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", sans-serif;
   font-size: 16px;
   line-height: 1.5;
   letter-spacing: -.01em;
@@ -95,6 +95,15 @@ button { font: inherit; color: inherit; }
   .lead    { font-size: 1.125rem; }
 }
 
+/* A Montserrat e ~18% mais larga que a Space Grotesk em caixa alta. No celular
+   o minimo do clamp (1.9rem) virava 3 linhas no h1 e nos h2 de duas; aqui o
+   tamanho acompanha a largura da tela e mantem as quebras de antes: 2 linhas
+   no h1, 1 linha no "Simples como uma bala". Acima de 480px sobra espaco. */
+@media (max-width: 479px) {
+  .h1 { font-size: 7.8vw; }
+  .h2 { font-size: 7.3vw; }
+}
+
 /* Molduras de imagem: a caixa manda na proporção, a imagem é absoluta.
    Nunca usar max-height:100% em imagem dentro de pai com aspect-ratio. */
 .media-frame { position: relative; overflow: hidden; }
@@ -134,6 +143,10 @@ button { font: inherit; color: inherit; }
 .btn svg    { flex: none; }
 
 @media (min-width: 992px) { .btn { min-height: 72px; font-size: 20px; } }
+
+/* no celular o texto do botao tem que caber numa linha: "QUERO RESGATAR MEUS
+   KITS" em Montserrat a 18px pedia 279px e o botao so tinha 255px livres */
+@media (max-width: 479px) { .btn { padding-inline: 18px; font-size: clamp(14px, 4.3vw, 18px); } }
 
 .cta-block { display: flex; flex-direction: column; align-items: center; gap: 10px; }
 
@@ -246,6 +259,16 @@ button { font: inherit; color: inherit; }
   .salebar__title { font-size: 18px; }
   .salebar__desc  { font-size: 12px; }
   .timer__num { font-size: 22px; }
+}
+
+/* A barra tem altura fixa. No celular, com "Precisa de mais tempo?" ou "Oferta
+   reservada" no lugar do contador, sobra pouca largura: o titulo diminui e a
+   descricao sai -- ela repete a barra amarela logo acima. Com o contador
+   rodando ela cabe e fica. */
+@media (max-width: 479px) {
+  .salebar__title { font-size: 13px; }
+  .is-expired .salebar__desc,
+  .is-reserved .salebar__desc { display: none; }
 }
 
 /* ============================================================
@@ -456,7 +479,7 @@ button { font: inherit; color: inherit; }
 }
 
 /* Preço */
-.price__label { margin: 0; grid-area: 1 / 1 / 2 / 2; align-self: baseline; font-size: clamp(0.9rem, 4.6vw, 1.125rem); font-weight: 700; line-height: 1.2; letter-spacing: .03em; text-transform: uppercase; color: var(--blue); }
+.price__label { margin: 0; grid-area: 1 / 1 / 2 / 2; align-self: baseline; font-size: clamp(0.8rem, 4.2vw, 1.125rem); font-weight: 700; line-height: 1.2; letter-spacing: .03em; text-transform: uppercase; color: var(--blue); }
 /* 3 linhas: rotulo + desconto / precos / unidade (2 col) */
 .price { display: grid; grid-template-columns: auto auto; justify-content: start;
          align-items: center; column-gap: 14px; row-gap: 6px; margin-top: 14px; }
@@ -519,7 +542,9 @@ button { font: inherit; color: inherit; }
 .modal__grip { align-self: center; width: 56px; height: 5px; border-radius: 3px; background: var(--navy-14); }
 
 .modal__head { display: flex; align-items: center; gap: 10px; }
-.modal__title { flex: 1; margin: 0; font-size: clamp(1.25rem, 5.4vw, 1.75rem); font-weight: 700; line-height: 1.15; letter-spacing: -.02em; color: var(--navy); }
+/* 4.9vw: com a Montserrat, "Voce garantiu os brindes" so fica numa linha a 360px
+   ate uns 18px -- em duas, a folha crescia so nessa etapa */
+.modal__title { flex: 1; margin: 0; font-size: clamp(1.05rem, 4.9vw, 1.75rem); font-weight: 700; line-height: 1.15; letter-spacing: -.02em; color: var(--navy); }
 
 .modal__back, .modal__close {
   flex: none; display: grid; place-items: center;
@@ -593,11 +618,14 @@ button { font: inherit; color: inherit; }
   background: var(--cream-2);
 }
 
+/* abaixo de 375px a miniatura encolhe para o nome do sabor caber ao lado do botao */
+@media (max-width: 374px) { .conta-grid { --thumb: clamp(48px, 7.4dvh, 56px); } }
+
 .conta {
   position: relative;          /* ancora do badge */
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   padding: 10px 12px;
   /* borda transparente no repouso: o .is-on troca so a cor, sem pular altura */
   border: 2px solid transparent;
@@ -637,13 +665,17 @@ button { font: inherit; color: inherit; }
    colorido, entao o quadrado fica preenchido de ponta a ponta como no print */
 .conta__media img { width: 100%; height: 100%; object-fit: cover; }
 
+/* com a Montserrat o nome tinha 48px a 360px e "Melancia" invadia o botao:
+   13px, botao mais enxuto e gap 10 deixam ~75px, onde "Vermelhas" (72px) cabe.
+   overflow-wrap e so a rede para telas de 320px: quebra a palavra, nao invade */
 .conta__name {
   flex: 1;
   min-width: 0;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 700;
   line-height: 1.2;
   color: var(--navy);
+  overflow-wrap: anywhere;
 }
 
 /* ----- controle da direita, estado ZERO: botao ADICIONAR + ----- */
@@ -652,20 +684,27 @@ button { font: inherit; color: inherit; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 9px 14px;
+  padding: 9px 10px;
   border: 0;
   border-radius: var(--radius-sm);
   background: var(--navy);
   color: var(--cream);
-  font-size: 11px;
+  font-size: 10.5px;
   font-weight: 700;
   line-height: 1;
-  letter-spacing: .04em;
+  letter-spacing: .02em;
   text-transform: uppercase;
   white-space: nowrap;
   cursor: pointer;
 }
 .conta__add svg { fill: none; stroke: currentColor; stroke-width: 2.6; stroke-linecap: round; }
+/* em 320px nem o botao enxuto deixa o nome caber ao lado (sobravam 40px e
+   "Melancia com Limao" quebrava em 5): fica so o +, e o aria-label ("Adicionar
+   um pouch de ...") continua dizendo o que ele faz */
+@media (max-width: 340px) {
+  .conta__add-txt { display: none; }
+  .conta__add { padding: 9px 11px; }
+}
 /* fechou as 3: o render() desabilita todo [data-mais] de uma vez */
 .conta__add:disabled { opacity: .28; cursor: default; }
 
@@ -752,6 +791,20 @@ button { font: inherit; color: inherit; }
 
 .pick-grid--gifts .pick--wide { grid-column: 1 / -1; justify-self: center; width: min(100%, 300px); }
 
+/* etapa 2 (sabor gratis): as mesmas fotos quadradas da etapa 1, com cenario.
+   A foto vira um quadrado do lado que o clamp do .pick__media img deixaria de
+   altura -- e ele que faz as 2 fileiras caberem num celular baixo --, centrado
+   no cartao. Sem o fundo creme, que so servia de chao para o pouch recortado. */
+.pick-grid--sabores .pick__media { background: none; }
+.pick-grid--sabores .pick__media img {
+  width: min(100%, 150px);
+  width: min(100%, clamp(96px, calc(46dvh - 186px), 150px));
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
 
 /* rodape das etapas 1 e 2: mostra o que ja esta garantido enquanto o
    botao de finalizar ainda nao aparece (ele so entra na etapa 3) */
@@ -810,6 +863,7 @@ button { font: inherit; color: inherit; }
   .modal__sheet { border-radius: 20px; max-height: 88vh; max-height: 88dvh; }
   /* 190px a partir de ~880px de altura; num notebook de 720px fica em ~120px */
   .pick__media img { height: 190px; height: clamp(100px, calc(44dvh - 196px), 190px); }
+  .pick-grid--sabores .pick__media img { width: min(100%, 190px); width: min(100%, clamp(100px, calc(44dvh - 196px), 190px)); }
   .pick__name { font-size: 17px; }
 }
 
@@ -952,7 +1006,7 @@ button { font: inherit; color: inherit; }
 
 .benefit { display: flex; flex-direction: column; align-items: center; gap: 8px; text-align: center; }
 .benefit svg { color: var(--blue); }
-.benefit h3 { margin: 0; font-size: 20px; font-weight: 700; line-height: 1.15; }
+.benefit h3 { margin: 0; font-size: 18px; font-weight: 700; line-height: 1.15; }
 .benefit p  { margin: 0; font-size: 15px; line-height: 1.35; }
 
 @media (min-width: 992px) {

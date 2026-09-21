@@ -8,7 +8,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;1,400;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11.1.14/swiper-bundle.min.css">
 <link rel="stylesheet" href="v2.css">
 </head>
@@ -80,8 +80,11 @@
         <div class="gallery__main swiper" id="galleryMain">
           <div class="swiper-wrapper">
 
-            <!-- PROVISORIO: arte herdada da oferta 6 -- diz 2 pouches, 3 brindes e 30% OFF. Trocar pela capa da oferta 8 -->
-            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-capa-kit-30off.webp" alt="Kit Dia do Consumidor com 30% OFF: 2 pouches da sua escolha e 3 brindes grátis, bloco de notas, mousepad e 9 sachês de melancia com limão"></div></div>
+            <!-- capa da oferta 8, montada a partir da arte original (1080x1384, em assets-src): corte do
+                 titulo para baixo, sem a faixa "oferta limitada"; o FRETE GRATIS escrito deu lugar ao
+                 adesivo do caminhao (assets-src/brinde-frete-gratis.png), grande, embaixo do 45% OFF.
+                 O fundo foi estendido nas laterais e embaixo para fechar o quadrado da galeria -->
+            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-capa-compre3-leve4.webp" alt="Compre 3, leve 4: os 4 pouches DOT (menta, frutas vermelhas, citrus e melancia com limão), apoio de teclado e mousepad de brinde, 45% OFF de R$ 729,96 por R$ 399,90 e frete grátis"></div></div>
 
             <div class="swiper-slide">
               <div class="gallery__slide media-frame">
@@ -110,7 +113,7 @@
 
         <div class="gallery__thumbs swiper" id="galleryThumbs">
           <div class="swiper-wrapper">
-            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-capa-kit-30off.webp" alt=""></div></div>
+            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-capa-compre3-leve4.webp" alt=""></div></div>
             <div class="swiper-slide">
               <div class="gallery__slide media-frame">
                 <div class="compo compo--sabores">
@@ -501,7 +504,7 @@
             <span class="conta__badge">O mais vendido</span>
             <span class="conta__media"><img src="assets/seletor-menta.webp" alt="" width="400" height="400" loading="lazy"></span>
             <span class="conta__name">Menta</span>
-            <button class="conta__add" type="button" data-mais aria-label="Adicionar um pouch de Menta">Adicionar <svg width="13" height="13" aria-hidden="true"><use href="#i-plus"/></svg></button>
+            <button class="conta__add" type="button" data-mais aria-label="Adicionar um pouch de Menta"><span class="conta__add-txt">Adicionar</span> <svg width="13" height="13" aria-hidden="true"><use href="#i-plus"/></svg></button>
             <span class="conta__steps">
               <button class="conta__btn" type="button" data-menos aria-label="Tirar um pouch de Menta"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button>
               <span class="conta__qtd" data-qtd-txt>0</span>
@@ -512,7 +515,7 @@
           <div class="conta" data-conta data-qtd="0" data-yampi="KEWK5304MU" data-sabor="Frutas Vermelhas">
             <span class="conta__media"><img src="assets/seletor-frutas.webp" alt="" width="400" height="400" loading="lazy"></span>
             <span class="conta__name">Frutas Vermelhas</span>
-            <button class="conta__add" type="button" data-mais aria-label="Adicionar um pouch de Frutas Vermelhas">Adicionar <svg width="13" height="13" aria-hidden="true"><use href="#i-plus"/></svg></button>
+            <button class="conta__add" type="button" data-mais aria-label="Adicionar um pouch de Frutas Vermelhas"><span class="conta__add-txt">Adicionar</span> <svg width="13" height="13" aria-hidden="true"><use href="#i-plus"/></svg></button>
             <span class="conta__steps">
               <button class="conta__btn" type="button" data-menos aria-label="Tirar um pouch de Frutas Vermelhas"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button>
               <span class="conta__qtd" data-qtd-txt>0</span>
@@ -523,7 +526,7 @@
           <div class="conta" data-conta data-qtd="0" data-yampi="5IM1U6QS0Q" data-sabor="Citrus">
             <span class="conta__media"><img src="assets/seletor-citrus.webp" alt="" width="400" height="400" loading="lazy"></span>
             <span class="conta__name">Citrus</span>
-            <button class="conta__add" type="button" data-mais aria-label="Adicionar um pouch de Citrus">Adicionar <svg width="13" height="13" aria-hidden="true"><use href="#i-plus"/></svg></button>
+            <button class="conta__add" type="button" data-mais aria-label="Adicionar um pouch de Citrus"><span class="conta__add-txt">Adicionar</span> <svg width="13" height="13" aria-hidden="true"><use href="#i-plus"/></svg></button>
             <span class="conta__steps">
               <button class="conta__btn" type="button" data-menos aria-label="Tirar um pouch de Citrus"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button>
               <span class="conta__qtd" data-qtd-txt>0</span>
@@ -535,7 +538,7 @@
             <span class="conta__badge">Edição limitada</span>
             <span class="conta__media"><img src="assets/seletor-melancia.webp" alt="" width="400" height="400" loading="lazy"></span>
             <span class="conta__name">Melancia com Limão</span>
-            <button class="conta__add" type="button" data-mais aria-label="Adicionar um pouch de Melancia com Limão">Adicionar <svg width="13" height="13" aria-hidden="true"><use href="#i-plus"/></svg></button>
+            <button class="conta__add" type="button" data-mais aria-label="Adicionar um pouch de Melancia com Limão"><span class="conta__add-txt">Adicionar</span> <svg width="13" height="13" aria-hidden="true"><use href="#i-plus"/></svg></button>
             <span class="conta__steps">
               <button class="conta__btn" type="button" data-menos aria-label="Tirar um pouch de Melancia com Limão"><svg width="16" height="16" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg></button>
               <span class="conta__qtd" data-qtd-txt>0</span>
@@ -553,28 +556,28 @@
              brinde. Se fosse tambem pelo token, o carrinho mostrava o pouch duas vezes.
              Sao os cupons da oferta 8 (o "KT" no meio): alem do brinde, eles abatem o preco
              ate os R$ 399,90. Os da oferta 5 sao os mesmos sem o KT e so poem o brinde -->
-        <div class="pick-grid">
+        <div class="pick-grid pick-grid--sabores">
           <label class="pick">
             <input type="radio" name="pouch4" value="menta" data-cupom="CAWM7MG103KTCW83P4">
-            <span class="pick__media"><img src="assets/sabor-menta.webp" alt="" loading="lazy"></span>
+            <span class="pick__media"><img src="assets/seletor-menta.webp" alt="" width="400" height="400" loading="lazy"></span>
             <span class="pick__name">Menta</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </label>
           <label class="pick">
             <input type="radio" name="pouch4" value="frutas" data-cupom="CAWM7MG203KTCW83P4">
-            <span class="pick__media"><img src="assets/sabor-frutas.webp" alt="" loading="lazy"></span>
+            <span class="pick__media"><img src="assets/seletor-frutas.webp" alt="" width="400" height="400" loading="lazy"></span>
             <span class="pick__name">Frutas Vermelhas</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </label>
           <label class="pick">
             <input type="radio" name="pouch4" value="citrus" data-cupom="CAWM7MG303KTCW83P4">
-            <span class="pick__media"><img src="assets/sabor-citrus.webp" alt="" loading="lazy"></span>
+            <span class="pick__media"><img src="assets/seletor-citrus.webp" alt="" width="400" height="400" loading="lazy"></span>
             <span class="pick__name">Citrus</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </label>
           <label class="pick">
             <input type="radio" name="pouch4" value="melancia" data-cupom="CAWM7MG403KTCW83P4">
-            <span class="pick__media"><img src="assets/sabor-melancia.webp" alt="" loading="lazy"></span>
+            <span class="pick__media"><img src="assets/seletor-melancia.webp" alt="" width="400" height="400" loading="lazy"></span>
             <span class="pick__name">Melancia com Limão</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </label>
