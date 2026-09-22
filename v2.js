@@ -496,6 +496,19 @@
     }).observe(pouchGiro[0].closest('.gifts-box') || pouchGiro[0]);
   }
 
+  /* ---------- Galeria: fotos grandes depois da primeira tela -------
+     So a capa baixa com prioridade. As outras fotos da galeria ficam com
+     loading="lazy" (as miniaturas usam versoes pequenas, -mini), e quando a
+     pagina termina de carregar elas passam a baixar: nao disputam banda com
+     a primeira tela e ja estao prontas quando a pessoa arrastar.          */
+  function aqueceGaleria() {
+    document.querySelectorAll('#galleryMain img[loading="lazy"]').forEach(function (img) {
+      img.loading = 'eager';
+    });
+  }
+  if (document.readyState === 'complete') aqueceGaleria();
+  else window.addEventListener('load', aqueceGaleria);
+
   /* ---------- Carrosséis ----------------------------------------- */
   if (typeof Swiper === 'undefined') return;
 

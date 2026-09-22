@@ -6,8 +6,11 @@
 <title>Compre 3, Leve 4 — 100 doses + 3 brindes | DOT Energy</title>
 <meta name="description" content="Compre 3 pouches de 25 sachês e leve o 4º grátis, no sabor que você escolher — menta, frutas vermelhas, citrus ou melancia — com mousepad, apoio de teclado e frete grátis. De R$ 729,96 por R$ 399,90.">
 
+<!-- a capa e a maior imagem da primeira tela: comeca a baixar antes do CSS e do Swiper -->
+<link rel="preload" as="image" href="assets/galeria-capa-compre3-leve4.webp" fetchpriority="high">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://cdn.jsdelivr.net">
 <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,400;0,500;0,700;1,400;1,700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11.1.14/swiper-bundle.min.css">
 <link rel="stylesheet" href="v2.css">
@@ -34,7 +37,7 @@
   <div class="announce">Compre 3, Leve 4 &middot; 3 brindes grátis &middot; frete grátis</div>
   <!-- so o logo, centralizado: o menu e a sacola nao levavam a lugar nenhum -->
   <div class="nav-row">
-    <img class="nav-logo" src="assets/logo-dot.webp" alt="DOT Energy" width="240" height="240">
+    <img class="nav-logo" src="assets/logo-dot.webp" alt="DOT Energy" width="240" height="240" loading="eager" decoding="async">
   </div>
 </header>
 
@@ -85,22 +88,22 @@
                  e no lugar deles entrou o adesivo do caminhao (assets-src/brinde-frete-gratis.png), a 40px
                  da borda esquerda e com a base alinhada a da caixa do preco. O fundo foi estendido 54px de
                  cada lado para fechar o quadrado da galeria -->
-            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-capa-compre3-leve4.webp" alt="Compre 3, leve 4: os 4 pouches DOT (menta, frutas vermelhas, citrus e melancia com limão), apoio de teclado e mousepad de brinde e frete grátis, de R$ 729,96 por R$ 399,90"></div></div>
+            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-capa-compre3-leve4.webp" alt="Compre 3, leve 4: os 4 pouches DOT (menta, frutas vermelhas, citrus e melancia com limão), apoio de teclado e mousepad de brinde e frete grátis, de R$ 729,96 por R$ 399,90" width="1188" height="1188" loading="eager" decoding="async" fetchpriority="high"></div></div>
 
             <div class="swiper-slide">
               <div class="gallery__slide media-frame">
                 <div class="compo compo--sabores">
-                  <figure><img src="assets/sabor-menta.webp"    alt="Sabor menta"><figcaption>Menta</figcaption></figure>
-                  <figure><img src="assets/sabor-frutas.webp"   alt="Sabor frutas vermelhas"><figcaption>Frutas<br>vermelhas</figcaption></figure>
-                  <figure><img src="assets/sabor-citrus.webp"   alt="Sabor citrus"><figcaption>Citrus</figcaption></figure>
-                  <figure><img src="assets/sabor-melancia.webp" alt="Sabor melancia com limão"><figcaption>Melancia<br>c/ limão</figcaption></figure>
+                  <figure><img src="assets/sabor-menta.webp"    alt="Sabor menta" width="300" height="433" loading="lazy" decoding="async"><figcaption>Menta</figcaption></figure>
+                  <figure><img src="assets/sabor-frutas.webp"   alt="Sabor frutas vermelhas" width="300" height="433" loading="lazy" decoding="async"><figcaption>Frutas<br>vermelhas</figcaption></figure>
+                  <figure><img src="assets/sabor-citrus.webp"   alt="Sabor citrus" width="300" height="433" loading="lazy" decoding="async"><figcaption>Citrus</figcaption></figure>
+                  <figure><img src="assets/sabor-melancia.webp" alt="Sabor melancia com limão" width="300" height="433" loading="lazy" decoding="async"><figcaption>Melancia<br>c/ limão</figcaption></figure>
                 </div>
               </div>
             </div>
 
-            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-mousepad-gratis.webp"      alt="Mousepad DOT grátis"></div></div>
-            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-apoio-teclado-gratis.webp" alt="Apoio de teclado DOT grátis"></div></div>
-            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-frete-gratis.webp"        alt="Frete grátis para todo o Brasil"></div></div>
+            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-mousepad-gratis.webp"      alt="Mousepad DOT grátis" width="1254" height="1254" loading="lazy" decoding="async"></div></div>
+            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-apoio-teclado-gratis.webp" alt="Apoio de teclado DOT grátis" width="1254" height="1254" loading="lazy" decoding="async"></div></div>
+            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-frete-gratis.webp"        alt="Frete grátis para todo o Brasil" width="1254" height="1254" loading="lazy" decoding="async"></div></div>
 
           </div>
 
@@ -114,20 +117,20 @@
 
         <div class="gallery__thumbs swiper" id="galleryThumbs">
           <div class="swiper-wrapper">
-            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-capa-compre3-leve4.webp" alt=""></div></div>
+            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-capa-compre3-leve4.webp" alt="" width="1188" height="1188" loading="eager" decoding="async"></div></div>
             <div class="swiper-slide">
               <div class="gallery__slide media-frame">
                 <div class="compo compo--sabores">
-                  <figure><img src="assets/sabor-menta.webp"    alt=""></figure>
-                  <figure><img src="assets/sabor-frutas.webp"   alt=""></figure>
-                  <figure><img src="assets/sabor-citrus.webp"   alt=""></figure>
-                  <figure><img src="assets/sabor-melancia.webp" alt=""></figure>
+                  <figure><img src="assets/sabor-menta.webp"    alt="" width="300" height="433" loading="eager" decoding="async"></figure>
+                  <figure><img src="assets/sabor-frutas.webp"   alt="" width="300" height="433" loading="eager" decoding="async"></figure>
+                  <figure><img src="assets/sabor-citrus.webp"   alt="" width="300" height="433" loading="eager" decoding="async"></figure>
+                  <figure><img src="assets/sabor-melancia.webp" alt="" width="300" height="433" loading="eager" decoding="async"></figure>
                 </div>
               </div>
             </div>
-            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-mousepad-gratis.webp"      alt=""></div></div>
-            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-apoio-teclado-gratis.webp" alt=""></div></div>
-            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-frete-gratis.webp"        alt=""></div></div>
+            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-mousepad-gratis-mini.webp" alt="" width="240" height="240" loading="eager" decoding="async"></div></div>
+            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-apoio-teclado-gratis-mini.webp" alt="" width="240" height="240" loading="eager" decoding="async"></div></div>
+            <div class="swiper-slide"><div class="gallery__slide gallery__slide--full media-frame"><img src="assets/galeria-frete-gratis-mini.webp" alt="" width="240" height="240" loading="eager" decoding="async"></div></div>
           </div>
         </div>
       </div>
@@ -152,9 +155,9 @@
             <ul class="gift-list">
               <li>
                 <span class="gift-list__trio">
-                  <img class="gift-list__img" src="assets/sabor-menta.webp"  alt="Pouch de menta" width="620" height="896" loading="lazy">
-                  <img class="gift-list__img" src="assets/sabor-frutas.webp" alt="Pouch de frutas vermelhas" width="620" height="896" loading="lazy">
-                  <img class="gift-list__img" src="assets/sabor-citrus.webp" alt="Pouch de citrus" width="620" height="896" loading="lazy">
+                  <img class="gift-list__img" src="assets/sabor-menta.webp"  alt="Pouch de menta" width="300" height="433" loading="lazy" decoding="async">
+                  <img class="gift-list__img" src="assets/sabor-frutas.webp" alt="Pouch de frutas vermelhas" width="300" height="433" loading="lazy" decoding="async">
+                  <img class="gift-list__img" src="assets/sabor-citrus.webp" alt="Pouch de citrus" width="300" height="433" loading="lazy" decoding="async">
                 </span>
                 <span class="gift-list__name">3 Pouches de 25 sachês</span>
                 <span class="gift-list__price">
@@ -169,29 +172,29 @@
             <ul class="gift-list">
               <li>
                 <span class="gift-list__img gift-list__img--giro" role="img" aria-label="4º pouch DOT, grátis, no sabor que você escolher">
-                  <img class="is-on" src="assets/sabor-melancia.webp" alt="" width="620" height="896" loading="lazy">
-                  <img src="assets/sabor-menta.webp" alt="" width="620" height="896" loading="lazy">
-                  <img src="assets/sabor-frutas.webp" alt="" width="620" height="896" loading="lazy">
-                  <img src="assets/sabor-citrus.webp" alt="" width="620" height="896" loading="lazy">
+                  <img class="is-on" src="assets/sabor-melancia.webp" alt="" width="300" height="433" loading="lazy" decoding="async">
+                  <img src="assets/sabor-menta.webp" alt="" width="300" height="433" loading="lazy" decoding="async">
+                  <img src="assets/sabor-frutas.webp" alt="" width="300" height="433" loading="lazy" decoding="async">
+                  <img src="assets/sabor-citrus.webp" alt="" width="300" height="433" loading="lazy" decoding="async">
                 </span>
                 <span class="gift-list__name">4º Pouch — sabor à escolha</span>
                 <span class="gift-list__was">R$ 162,49</span>
                 <span class="free">Grátis</span>
               </li>
               <li>
-                <img class="gift-list__img" src="assets/brinde-mousepad.webp" alt="Mousepad DOT" width="620" height="751" loading="lazy">
+                <img class="gift-list__img" src="assets/brinde-mousepad.webp" alt="Mousepad DOT" width="620" height="751" loading="lazy" decoding="async">
                 <span class="gift-list__name">Mousepad DOT</span>
                 <span class="gift-list__was">R$ 35</span>
                 <span class="free">Grátis</span>
               </li>
               <li>
-                <img class="gift-list__img" src="assets/brinde-apoio-teclado.webp" alt="Apoio de teclado DOT" width="620" height="158" loading="lazy">
+                <img class="gift-list__img" src="assets/brinde-apoio-teclado.webp" alt="Apoio de teclado DOT" width="620" height="158" loading="lazy" decoding="async">
                 <span class="gift-list__name">Apoio de Teclado DOT</span>
                 <span class="gift-list__was">R$ 45</span>
                 <span class="free">Grátis</span>
               </li>
               <li>
-                <img class="gift-list__img" src="assets/brinde-frete-gratis.webp" alt="Frete grátis DOT" width="420" height="287" loading="lazy">
+                <img class="gift-list__img" src="assets/brinde-frete-gratis.webp" alt="Frete grátis DOT" width="420" height="287" loading="lazy" decoding="async">
                 <span class="gift-list__name">Frete para todo o Brasil</span>
                 <span class="free">Grátis</span>
               </li>
@@ -234,7 +237,7 @@
 
           <ul class="bullets">
             <li class="bullet">
-              <img class="bullet__icon" src="assets/icone-pouch.webp" alt="" width="298" height="420">
+              <img class="bullet__icon" src="assets/icone-pouch.webp" alt="" width="128" height="180" loading="lazy" decoding="async">
               <span>Escolha entre 4 sabores: menta, frutas vermelhas, citrus e melancia.</span>
             </li>
             <li class="bullet">
@@ -267,10 +270,10 @@
       <article class="gift-card">
         <div class="gift-card__media media-frame">
           <div class="compo compo--sabores">
-            <figure><img src="assets/sabor-menta.webp"    alt="Pouch de menta" loading="lazy"></figure>
-            <figure><img src="assets/sabor-frutas.webp"   alt="Pouch de frutas vermelhas" loading="lazy"></figure>
-            <figure><img src="assets/sabor-citrus.webp"   alt="Pouch de citrus" loading="lazy"></figure>
-            <figure><img src="assets/sabor-melancia.webp" alt="Pouch de melancia com limão" loading="lazy"></figure>
+            <figure><img src="assets/sabor-menta.webp"    alt="Pouch de menta" loading="lazy" width="300" height="433" decoding="async"></figure>
+            <figure><img src="assets/sabor-frutas.webp"   alt="Pouch de frutas vermelhas" loading="lazy" width="300" height="433" decoding="async"></figure>
+            <figure><img src="assets/sabor-citrus.webp"   alt="Pouch de citrus" loading="lazy" width="300" height="433" decoding="async"></figure>
+            <figure><img src="assets/sabor-melancia.webp" alt="Pouch de melancia com limão" loading="lazy" width="300" height="433" decoding="async"></figure>
           </div>
         </div>
         <div class="gift-card__body">
@@ -280,7 +283,7 @@
         </div>
       </article>
       <article class="gift-card">
-        <div class="gift-card__media media-frame"><img src="assets/brinde-mousepad.webp" alt="Mousepad DOT" loading="lazy"></div>
+        <div class="gift-card__media media-frame"><img src="assets/brinde-mousepad.webp" alt="Mousepad DOT" loading="lazy" width="620" height="751" decoding="async"></div>
         <div class="gift-card__body">
           <p class="gift-card__title">Mousepad DOT</p>
           <p class="gift-card__lead">Mais conforto pra sua rotina. Mais DOT na sua mesa.</p>
@@ -288,7 +291,7 @@
         </div>
       </article>
       <article class="gift-card">
-        <div class="gift-card__media media-frame"><img src="assets/brinde-apoio-teclado.webp" alt="Apoio de teclado DOT" loading="lazy"></div>
+        <div class="gift-card__media media-frame"><img src="assets/brinde-apoio-teclado.webp" alt="Apoio de teclado DOT" loading="lazy" width="620" height="158" decoding="async"></div>
         <div class="gift-card__body">
           <p class="gift-card__title">Apoio de Teclado DOT</p>
           <p class="gift-card__lead">Pulso apoiado, digitação sem peso.</p>
@@ -296,7 +299,7 @@
         </div>
       </article>
       <article class="gift-card">
-        <div class="gift-card__media media-frame"><img src="assets/brinde-frete-gratis.webp" alt="Frete grátis DOT" loading="lazy"></div>
+        <div class="gift-card__media media-frame"><img src="assets/brinde-frete-gratis.webp" alt="Frete grátis DOT" loading="lazy" width="420" height="287" decoding="async"></div>
         <div class="gift-card__body">
           <p class="gift-card__title">Frete Grátis</p>
           <p class="gift-card__lead">Chega na sua porta sem custo nenhum.</p>
@@ -312,10 +315,10 @@
             <article class="gift-card">
               <div class="gift-card__media media-frame">
                 <div class="compo compo--sabores">
-                  <figure><img src="assets/sabor-menta.webp"    alt="Pouch de menta" loading="lazy"></figure>
-                  <figure><img src="assets/sabor-frutas.webp"   alt="Pouch de frutas vermelhas" loading="lazy"></figure>
-                  <figure><img src="assets/sabor-citrus.webp"   alt="Pouch de citrus" loading="lazy"></figure>
-                  <figure><img src="assets/sabor-melancia.webp" alt="Pouch de melancia com limão" loading="lazy"></figure>
+                  <figure><img src="assets/sabor-menta.webp"    alt="Pouch de menta" loading="lazy" width="300" height="433" decoding="async"></figure>
+                  <figure><img src="assets/sabor-frutas.webp"   alt="Pouch de frutas vermelhas" loading="lazy" width="300" height="433" decoding="async"></figure>
+                  <figure><img src="assets/sabor-citrus.webp"   alt="Pouch de citrus" loading="lazy" width="300" height="433" decoding="async"></figure>
+                  <figure><img src="assets/sabor-melancia.webp" alt="Pouch de melancia com limão" loading="lazy" width="300" height="433" decoding="async"></figure>
                 </div>
               </div>
               <div class="gift-card__body">
@@ -327,7 +330,7 @@
           </div>
           <div class="swiper-slide">
             <article class="gift-card">
-              <div class="gift-card__media media-frame"><img src="assets/brinde-mousepad.webp" alt="Mousepad DOT" loading="lazy"></div>
+              <div class="gift-card__media media-frame"><img src="assets/brinde-mousepad.webp" alt="Mousepad DOT" loading="lazy" width="620" height="751" decoding="async"></div>
               <div class="gift-card__body">
                 <p class="gift-card__title">Mousepad DOT</p>
                 <p class="gift-card__lead">Mais conforto pra sua rotina. Mais DOT na sua mesa.</p>
@@ -337,7 +340,7 @@
           </div>
           <div class="swiper-slide">
             <article class="gift-card">
-              <div class="gift-card__media media-frame"><img src="assets/brinde-apoio-teclado.webp" alt="Apoio de teclado DOT" loading="lazy"></div>
+              <div class="gift-card__media media-frame"><img src="assets/brinde-apoio-teclado.webp" alt="Apoio de teclado DOT" loading="lazy" width="620" height="158" decoding="async"></div>
               <div class="gift-card__body">
                 <p class="gift-card__title">Apoio de Teclado DOT</p>
                 <p class="gift-card__lead">Pulso apoiado, digitação sem peso.</p>
@@ -347,7 +350,7 @@
           </div>
           <div class="swiper-slide">
             <article class="gift-card">
-              <div class="gift-card__media media-frame"><img src="assets/brinde-frete-gratis.webp" alt="Frete grátis DOT" loading="lazy"></div>
+              <div class="gift-card__media media-frame"><img src="assets/brinde-frete-gratis.webp" alt="Frete grátis DOT" loading="lazy" width="420" height="287" decoding="async"></div>
               <div class="gift-card__body">
                 <p class="gift-card__title">Frete Grátis</p>
                 <p class="gift-card__lead">Chega na sua porta sem custo nenhum.</p>
@@ -503,7 +506,7 @@
 
           <div class="conta" data-conta data-qtd="0" data-yampi="T7OSNI4X3Z" data-sabor="Menta">
             <span class="conta__badge">O mais vendido</span>
-            <span class="conta__media"><img src="assets/seletor-menta.webp" alt="" width="400" height="400" loading="lazy"></span>
+            <span class="conta__media"><img src="assets/seletor-menta.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
             <span class="conta__name">Menta</span>
             <button class="conta__add" type="button" data-mais aria-label="Adicionar um pouch de Menta"><span class="conta__add-txt">Adicionar</span> <svg width="13" height="13" aria-hidden="true"><use href="#i-plus"/></svg></button>
             <span class="conta__steps">
@@ -514,7 +517,7 @@
           </div>
 
           <div class="conta" data-conta data-qtd="0" data-yampi="KEWK5304MU" data-sabor="Frutas Vermelhas">
-            <span class="conta__media"><img src="assets/seletor-frutas.webp" alt="" width="400" height="400" loading="lazy"></span>
+            <span class="conta__media"><img src="assets/seletor-frutas.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
             <span class="conta__name">Frutas Vermelhas</span>
             <button class="conta__add" type="button" data-mais aria-label="Adicionar um pouch de Frutas Vermelhas"><span class="conta__add-txt">Adicionar</span> <svg width="13" height="13" aria-hidden="true"><use href="#i-plus"/></svg></button>
             <span class="conta__steps">
@@ -525,7 +528,7 @@
           </div>
 
           <div class="conta" data-conta data-qtd="0" data-yampi="5IM1U6QS0Q" data-sabor="Citrus">
-            <span class="conta__media"><img src="assets/seletor-citrus.webp" alt="" width="400" height="400" loading="lazy"></span>
+            <span class="conta__media"><img src="assets/seletor-citrus.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
             <span class="conta__name">Citrus</span>
             <button class="conta__add" type="button" data-mais aria-label="Adicionar um pouch de Citrus"><span class="conta__add-txt">Adicionar</span> <svg width="13" height="13" aria-hidden="true"><use href="#i-plus"/></svg></button>
             <span class="conta__steps">
@@ -537,7 +540,7 @@
 
           <div class="conta" data-conta data-qtd="0" data-yampi="R5F5MQP29R" data-sabor="Melancia com Limão">
             <span class="conta__badge">Edição limitada</span>
-            <span class="conta__media"><img src="assets/seletor-melancia.webp" alt="" width="400" height="400" loading="lazy"></span>
+            <span class="conta__media"><img src="assets/seletor-melancia.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
             <span class="conta__name">Melancia com Limão</span>
             <button class="conta__add" type="button" data-mais aria-label="Adicionar um pouch de Melancia com Limão"><span class="conta__add-txt">Adicionar</span> <svg width="13" height="13" aria-hidden="true"><use href="#i-plus"/></svg></button>
             <span class="conta__steps">
@@ -560,25 +563,25 @@
         <div class="pick-grid pick-grid--sabores">
           <label class="pick">
             <input type="radio" name="pouch4" value="menta" data-cupom="CAWM7MG103KTCW83P4">
-            <span class="pick__media"><img src="assets/seletor-menta.webp" alt="" width="400" height="400" loading="lazy"></span>
+            <span class="pick__media"><img src="assets/seletor-menta.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
             <span class="pick__name">Menta</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </label>
           <label class="pick">
             <input type="radio" name="pouch4" value="frutas" data-cupom="CAWM7MG203KTCW83P4">
-            <span class="pick__media"><img src="assets/seletor-frutas.webp" alt="" width="400" height="400" loading="lazy"></span>
+            <span class="pick__media"><img src="assets/seletor-frutas.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
             <span class="pick__name">Frutas Vermelhas</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </label>
           <label class="pick">
             <input type="radio" name="pouch4" value="citrus" data-cupom="CAWM7MG303KTCW83P4">
-            <span class="pick__media"><img src="assets/seletor-citrus.webp" alt="" width="400" height="400" loading="lazy"></span>
+            <span class="pick__media"><img src="assets/seletor-citrus.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
             <span class="pick__name">Citrus</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </label>
           <label class="pick">
             <input type="radio" name="pouch4" value="melancia" data-cupom="CAWM7MG403KTCW83P4">
-            <span class="pick__media"><img src="assets/seletor-melancia.webp" alt="" width="400" height="400" loading="lazy"></span>
+            <span class="pick__media"><img src="assets/seletor-melancia.webp" alt="" width="400" height="400" loading="lazy" decoding="async"></span>
             <span class="pick__name">Melancia com Limão</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </label>
@@ -588,19 +591,19 @@
       <div class="modal__panel" data-step="3" inert aria-hidden="true">
         <div class="pick-grid pick-grid--gifts">
           <div class="pick is-won pick--wide">
-            <span class="pick__media"><img src="assets/brinde-frete-gratis.webp" alt="" loading="lazy"></span>
+            <span class="pick__media"><img src="assets/brinde-frete-gratis.webp" alt="" loading="lazy" width="420" height="287" decoding="async"></span>
             <span class="pick__name">Frete Grátis</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <div class="pick is-won">
-            <span class="pick__media"><img src="assets/brinde-apoio-teclado.webp" alt="" loading="lazy"></span>
+            <span class="pick__media"><img src="assets/brinde-apoio-teclado.webp" alt="" loading="lazy" width="620" height="158" decoding="async"></span>
             <span class="pick__name">Apoio de Teclado DOT</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
           <!-- o KIT MOUSEPAD+TECLADOPAD da Yampi leva os dois brindes num produto so, entao
                o token fica so neste cartao: nos dois, o link pediria 2 kits -->
           <div class="pick is-won" data-yampi="DAKN0PBXKF">
-            <span class="pick__media"><img src="assets/brinde-mousepad.webp" alt="" loading="lazy"></span>
+            <span class="pick__media"><img src="assets/brinde-mousepad.webp" alt="" loading="lazy" width="620" height="751" decoding="async"></span>
             <span class="pick__name">Mousepad DOT</span>
             <svg class="pick__check" width="26" height="26" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="12" fill="currentColor"/><path d="m7 12.4 3.2 3.2L17 8.8" fill="none" stroke="#04142f" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
           </div>
@@ -614,10 +617,10 @@
         <p class="unlocked__text">Você já desbloqueou: <strong>4º Pouch Grátis</strong>, <strong>Frete Grátis</strong>, <strong>Mousepad DOT</strong> e <strong>Apoio de Teclado</strong></p>
         <!-- o rodizio segue a ordem do texto -->
         <span class="unlocked__media" aria-hidden="true">
-          <img src="assets/icone-pouch.webp" alt="" loading="lazy">
-          <img src="assets/brinde-frete-gratis.webp" alt="" loading="lazy">
-          <img src="assets/brinde-mousepad.webp" alt="" loading="lazy">
-          <img src="assets/brinde-apoio-teclado.webp" alt="" loading="lazy">
+          <img src="assets/icone-pouch.webp" alt="" loading="lazy" width="128" height="180" decoding="async">
+          <img src="assets/brinde-frete-gratis.webp" alt="" loading="lazy" width="420" height="287" decoding="async">
+          <img src="assets/brinde-mousepad.webp" alt="" loading="lazy" width="620" height="751" decoding="async">
+          <img src="assets/brinde-apoio-teclado.webp" alt="" loading="lazy" width="620" height="158" decoding="async">
         </span>
       </div>
 
@@ -629,7 +632,8 @@
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/swiper@11.1.14/swiper-bundle.min.js"></script>
-<script src="v2.js"></script>
+<!-- defer: baixam em paralelo e rodam na ordem, depois do HTML todo lido -->
+<script src="https://cdn.jsdelivr.net/npm/swiper@11.1.14/swiper-bundle.min.js" defer></script>
+<script src="v2.js" defer></script>
 </body>
 </html>
